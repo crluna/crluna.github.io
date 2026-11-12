@@ -206,6 +206,41 @@
   .chip{font-size:11.5px;letter-spacing:.02em;padding:4px 9px;border-radius:999px;
     background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);color:#cbc3bd}
 
+  /* ---------- milonga patterns ---------- */
+  .patterns{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .pat{
+    --c:var(--milonga);
+    border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .pat h3{font-family:var(--serif);font-size:1.08rem;margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+  .pat .tl{width:100%;height:auto;display:block;margin:2px 0 0}
+  .pat .pstep{transform-box:fill-box;transform-origin:center}
+  .pat .pstep.hit{animation:pstep .34s ease-out}
+  @keyframes pstep{0%{transform:scale(1);opacity:.85}40%{transform:scale(1.75);opacity:1}100%{transform:scale(1);opacity:.85}}
+  .pat .num.hit{animation:numhit .3s ease-out}
+  @keyframes numhit{0%{fill:#fff}100%{fill:rgba(242,236,230,.5)}}
+  .pat-foot{display:flex;align-items:center;gap:12px;margin-top:2px}
+  .pat-play{
+    font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+    border-radius:10px;padding:8px 16px;
+    border:1px solid color-mix(in srgb,var(--c) 50%,transparent);
+    background:color-mix(in srgb,var(--c) 14%,transparent);
+    color:color-mix(in srgb,var(--c) 90%,white);transition:background .2s;
+  }
+  .pat-play:hover{background:color-mix(in srgb,var(--c) 26%,transparent)}
+  .pat-play[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 85%,white);color:#12100f;border-color:transparent}
+  .pat-ts{font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dashed rgba(242,236,230,.28)}
+  .pat-ts:hover{color:var(--ink);border-color:var(--ink)}
+  .pat-note{font-size:13px;color:#c3bbb5;margin:0;line-height:1.5}
+  .embed{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;margin-top:26px}
+  @media(max-width:820px){.embed{grid-template-columns:1fr}}
+  .embed-inner{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000}
+  .embed-inner iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .embed-cap{margin:0;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .embed-cap b{color:var(--ink);font-weight:600}
+
   /* ---------- compare bar ---------- */
   .compare{
     display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
@@ -322,6 +357,7 @@
     <div class="brand"><b>Three</b> Rhythms</div>
     <nav>
       <a href="#styles">The three</a>
+      <a href="#milonga-patterns">Milonga patterns</a>
       <a href="#tempo">Tempo vs rhythm</a>
       <a href="#compare">Compare</a>
       <a href="#quiz">Ear test</a>
@@ -437,6 +473,40 @@
         <button class="btn btn-ghost" id="compareBtn" style="padding:10px 18px;font-size:14px">🔁 Back-to-back demo</button>
         <a class="btn btn-ghost" href="#quiz" style="padding:10px 18px;font-size:14px;text-decoration:none">Take the ear test →</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="milonga-patterns">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 02 · Milonga patterns</p>
+      <h2>Five ways to place the steps</h2>
+      <p class="sub">
+        From Thanh Dang's <em>Tango Theory — The Milonga Rhythms</em>. Same four-beat pulse every time;
+        what changes is <strong>where the steps land</strong>. He draws two timelines for each pattern:
+        <em>symmetric</em> (steps evenly spread) and <em>a-symmetric</em> (the middle pair crowded together,
+        which is what gives milonga its rocking, not-marching feel). Then he says "Test Yourself" and stops
+        talking, so you can hear it without him.
+      </p>
+    </div>
+
+    <div class="patterns" id="patterns"></div>
+
+    <div class="embed">
+      <div class="embed-inner">
+        <iframe src="https://www.youtube-nocookie.com/embed/J_x03DDapUg?start=18"
+                title="Tango Theory — The Milonga Rhythms"
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+      </div>
+      <p class="embed-cap">
+        <b>Tango Theory — The Milonga Rhythms</b>, Thanh Dang · 4:46.<br>
+        The five patterns and their beat numbers are read off his slides at 0:18, 1:03, 1:57, 2:42 and 3:36.
+        The play buttons are a synth playing the spacing he draws over a milonga pulse — a study aid,
+        not his audio. Note: his slides spell it "rythm"; I've kept his titles close but fixed the spelling.
+      </p>
     </div>
   </div>
 </section>
@@ -642,6 +712,48 @@
     }
   };
 
+  /* ---------- milonga patterns (Thanh Dang, "Tango Theory") ----------
+     Each pattern = the beats his slide marks as steps, plus the timeline
+     spacing he draws: symmetric = evenly spread, a-symmetric = the middle
+     pair crowded together. Beat positions are in beats of a 4-beat phrase. */
+  const PATTERNS = [
+    {
+      id: 'asym-1234',
+      title: 'A-Symmetric rhythm 1 · 2 · 3 · 4',
+      ts: 18, asym: true, traspie: false,
+      ticks: [1, 2, 2.45, 4], steps: [1, 2, 2.45, 4],
+      note: 'All four beats used, but his a-symmetric timeline crowds the middle pair: step, step-step, step. This is the rocking walk.'
+    },
+    {
+      id: 'sym-13',
+      title: 'Symmetric 1 · 3',
+      ts: 63, asym: false, traspie: false,
+      ticks: [1, 2, 3, 4], steps: [1, 3],
+      note: 'Two steps a bar, evenly spaced, beats 2 and 4 left empty. The most open, unhurried milonga walk.'
+    },
+    {
+      id: 'tras-123',
+      title: 'Traspié · A-Symmetric 1 · 2 · 3',
+      ts: 117, asym: true, traspie: true,
+      ticks: [1, 2, 2.45, 4], steps: [1, 2, 2.45],
+      note: 'Three steps with the crowded middle pair, then the quick double-time flick — the traspié.'
+    },
+    {
+      id: 'tras-123s',
+      title: 'Traspié · Symmetric 1 · 2 · 3',
+      ts: 162, asym: false, traspie: true,
+      ticks: [1, 2, 3, 4], steps: [1, 2, 3],
+      note: 'Even steps across the first three beats, with the traspié flick on the third. Beat 4 stays empty.'
+    },
+    {
+      id: 'tras-134',
+      title: 'Traspié · Symmetric 1 · 3 · 4',
+      ts: 216, asym: false, traspie: true,
+      ticks: [1, 2, 3, 4], steps: [1, 3, 4],
+      note: 'Beat 2 is skipped: step, wait, then two quick steps into the turn. The gap is what makes it cheeky.'
+    }
+  ];
+
   const bpm = { tango: 62, vals: 174, milonga: 104 };
 
   const opts = {
@@ -744,9 +856,47 @@
     return hits.sort((x,y) => (x.b + x.s/STYLES[key].sub) - (y.b + y.s/STYLES[key].sub));
   }
 
+  function advanceBar(){
+    T.bar++;
+    T.barsLeft--;
+    if(T.barsLeft <= 0){
+      T.idx++;
+      if(T.idx < T.seq.length){
+        T.barsLeft = T.seq[T.idx].bars;
+        T.bar = 0;
+      }
+    }
+  }
+
+  // one bar of a milonga pattern: 4-beat pulse + a boom on every beat his slide marks as a step
+  function schedulePatternBar(t, cur){
+    const p = cur.pattern;
+    const b = cur.bpm || 104;
+    const spb = 60 / b;
+    T.queue.push({time: t - 0.002, type:'bar', key:'milonga', bar: T.bar});
+    for(let i = 0; i < 4; i++){
+      const when = t + i * spb;
+      VOICES.tick(when, 0.20);
+      T.queue.push({time: when, type:'grid', id: p.id, i: i});
+    }
+    p.steps.forEach((s, i) => {
+      const when = t + (s - 1) * spb;
+      VOICES.boom(when, i === 0 ? 1 : 0.82);
+      T.queue.push({time: when, type:'pat', id: p.id, i: i});
+      if(p.traspie && i === p.steps.length - 1){
+        VOICES.tap(when + spb * 0.28, 0.75);
+        T.queue.push({time: when + spb * 0.28, type:'pat', id: p.id, i: i});
+      }
+    });
+    T.queue.sort((x, y) => x.time - y.time);
+    advanceBar();
+    return t + 4 * spb;
+  }
+
   function scheduleBar(t){
     const cur = T.seq[T.idx];
     if(!cur) return t;
+    if(cur.pattern) return schedulePatternBar(t, cur);
     const st = STYLES[cur.key];
     const o = cur.opts || opts[cur.key];
     const b = cur.bpm || bpm[cur.key];
@@ -762,15 +912,7 @@
     });
     T.queue.sort((x,y) => x.time - y.time);
 
-    T.bar++;
-    T.barsLeft--;
-    if(T.barsLeft <= 0){
-      T.idx++;
-      if(T.idx < T.seq.length){
-        T.barsLeft = T.seq[T.idx].bars;
-        T.bar = 0;
-      }
-    }
+    advanceBar();
     return t + st.meter * spb;
   }
 
@@ -896,6 +1038,69 @@
       b.setAttribute('aria-pressed','false');
       b.textContent = '▶ Play ' + b.dataset.play;
     });
+    document.querySelectorAll('.pat-play').forEach(b => {
+      b.setAttribute('aria-pressed','false');
+      b.textContent = '▶ Play';
+    });
+  }
+
+  /* ---------- milonga pattern cards ---------- */
+  function renderPatterns(){
+    const host = document.getElementById('patterns');
+    if(!host) return;
+    const W = 340, H = 104, pad = 28;
+    const xf = b => pad + ((b - 1) / 3) * (W - 2 * pad);
+    host.innerHTML = PATTERNS.map(p => {
+      let svg = '<svg class="tl" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + p.title.replace(/"/g,'') + '">';
+      svg += '<line x1="' + (pad - 10) + '" y1="66" x2="' + (W - pad + 10) + '" y2="66" stroke="rgba(242,236,230,.22)" stroke-width="1.5"/>';
+      p.ticks.forEach((tk, i) => {
+        const cx = xf(tk);
+        const stepped = p.steps.indexOf(tk) !== -1;
+        svg += '<line x1="' + cx + '" y1="52" x2="' + cx + '" y2="80" stroke="' + (stepped ? '#3fbcaa' : 'rgba(242,236,230,.3)') + '" stroke-width="' + (stepped ? 3 : 1.5) + '" stroke-linecap="round"/>';
+        svg += '<text class="num" data-i="' + i + '" x="' + cx + '" y="96" text-anchor="middle" fill="rgba(242,236,230,.5)" font-size="11">' + (i + 1) + '</text>';
+        if(stepped){
+          svg += '<circle class="pstep" data-i="' + p.steps.indexOf(tk) + '" cx="' + cx + '" cy="42" r="9" fill="#3fbcaa" opacity=".85"/>';
+        }
+      });
+      svg += '</svg>';
+      return '<article class="pat" data-pat="' + p.id + '">'
+        +    '<h3>' + p.title + '</h3>'
+        +    svg
+        +    '<div class="pat-foot">'
+        +      '<button class="pat-play" data-pattern="' + p.id + '" aria-pressed="false">▶ Play</button>'
+        +      '<a class="pat-ts" href="https://youtu.be/J_x03DDapUg?t=' + p.ts + '" target="_blank" rel="noopener">his slide · ' + Math.floor(p.ts/60) + ':' + String(p.ts%60).padStart(2,'0') + '</a>'
+        +    '</div>'
+        +    '<p class="pat-note">' + p.note + '</p>'
+        +  '</article>';
+    }).join('');
+
+    host.querySelectorAll('.pat-play').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pattern;
+        const p = PATTERNS.filter(x => x.id === id)[0];
+        if(T.playing && T.mode === 'pattern' && T.seq[0] && T.seq[0].pattern && T.seq[0].pattern.id === id){
+          stop(); return;
+        }
+        stop();
+        start([{pattern: p, bars: 2}], 'pattern');
+        setActive('milonga');
+        clearActive();
+        btn.setAttribute('aria-pressed','true');
+        btn.textContent = '■ Stop';
+      });
+    });
+  }
+
+  function flashPattern(id, i, kind){
+    const card = document.querySelector('.pat[data-pat="' + id + '"]');
+    if(!card) return;
+    if(kind === 'grid'){
+      const n = card.querySelector('.num[data-i="' + i + '"]');
+      if(n){ n.classList.remove('hit'); void n.getBoundingClientRect(); n.classList.add('hit'); }
+      return;
+    }
+    const el = card.querySelector('.pstep[data-i="' + i + '"]');
+    if(el){ el.classList.remove('hit'); void el.getBoundingClientRect(); el.classList.add('hit'); }
   }
   function syncButtons(){ /* active state handled in pump */ }
 
@@ -920,6 +1125,7 @@
       while(T.queue.length && T.queue[0].time <= now + 0.03){
         const e = T.queue.shift();
         if(e.type === 'bar'){ setActive(e.key); }
+        else if(e.type === 'pat' || e.type === 'grid'){ flashPattern(e.id, e.i, e.type); }
         else { flashSlot(e.key, e.slot, e.a); }
       }
     }
@@ -1075,6 +1281,7 @@
    * ------------------------------------------------------------------ */
   buildMeters();
   indexDots();
+  renderPatterns();
   requestAnimationFrame(raf);
 
   // keyboard: 1/2/3 play, space stops
