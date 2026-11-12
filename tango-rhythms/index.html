@@ -1083,8 +1083,8 @@
         }
         stop();
         start([{pattern: p, bars: 2}], 'pattern');
-        setActive('milonga');
         clearActive();
+        setActive('milonga');
         btn.setAttribute('aria-pressed','true');
         btn.textContent = '■ Stop';
       });
