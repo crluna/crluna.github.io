@@ -734,8 +734,8 @@
       title: 'A-Symmetric rhythm 1 · 2 · 3 · 4',
       ts: 18, traspie: false,
       steps: [1, 3, 4],
-      sync: [1.5],
-      note: 'The pulse stays even. Steps land on 1, 3 and 4 — the count he calls “2” is a sincopa, an off-beat step between 1 and 2. His slide draws the ticks unevenly, which reads as if the beat moves; it does not.'
+      sync: [2.5],
+      note: 'The pulse stays even. Steps land on 1, 3 and 4 — the count he calls “2” is a sincopa on the “and” of 2, an off-beat step just after beat 2. His slide draws the ticks unevenly, which reads as if the beat moves; it does not.'
     },
     {
       id: 'sym-13',
@@ -750,8 +750,8 @@
       title: 'Traspié · A-Symmetric 1 · 2 · 3',
       ts: 117, traspie: true,
       steps: [1, 3],
-      sync: [1.5],
-      note: 'Same sincopa between 1 and 2, a step on 3, then the quick double-time flick — the traspié.'
+      sync: [2.5],
+      note: 'Same sincopa on the “and” of 2, a step on 3, then the quick double-time flick — the traspié.'
     },
     {
       id: 'tras-123s',
@@ -1124,7 +1124,7 @@
           stop(); return;
         }
         stop();
-        start([{pattern: p, bars: 2}], 'pattern');
+        start([{pattern: p, bars: 100000}], 'pattern');
         clearActive();
         setActive('milonga');
         btn.setAttribute('aria-pressed','true');
