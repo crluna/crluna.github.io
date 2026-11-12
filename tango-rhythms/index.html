@@ -216,8 +216,8 @@
   }
   .pat h3{font-family:var(--serif);font-size:1.08rem;margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.3}
   .pat .tl{width:100%;height:auto;display:block;margin:2px 0 0}
-  .pat .pstep{transform-box:fill-box;transform-origin:center}
-  .pat .pstep.hit{animation:pstep .34s ease-out}
+  .pat .pmark{transform-box:fill-box;transform-origin:center}
+  .pat .pmark.hit{animation:pstep .34s ease-out}
   @keyframes pstep{0%{transform:scale(1);opacity:.85}40%{transform:scale(1.75);opacity:1}100%{transform:scale(1);opacity:.85}}
   .pat .num.hit{animation:numhit .3s ease-out}
   @keyframes numhit{0%{fill:#fff}100%{fill:rgba(242,236,230,.5)}}
@@ -234,6 +234,12 @@
   .pat-ts{font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dashed rgba(242,236,230,.28)}
   .pat-ts:hover{color:var(--ink);border-color:var(--ink)}
   .pat-note{font-size:13px;color:#c3bbb5;margin:0;line-height:1.5}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin:16px 0 0;font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .legend i{display:inline-block;flex:0 0 auto}
+  .legend .dot-solid{width:11px;height:11px;border-radius:50%;background:var(--milonga)}
+  .legend .dot-sync{width:11px;height:11px;border-radius:50%;border:2.5px solid var(--vals);box-sizing:border-box}
+  .legend .tick-faint{width:2px;height:14px;background:rgba(242,236,230,.35)}
   .embed{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;margin-top:26px}
   @media(max-width:820px){.embed{grid-template-columns:1fr}}
   .embed-inner{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000}
@@ -485,10 +491,12 @@
       <p class="sub">
         From Thanh Dang's <em>Tango Theory — The Milonga Rhythms</em>. Same four-beat pulse every time;
         what changes is <strong>where the steps land</strong>. He draws two timelines for each pattern:
-        <em>symmetric</em> (steps evenly spread) and <em>a-symmetric</em> (the middle pair crowded together,
-        which is what gives milonga its rocking, not-marching feel). Then he says "Test Yourself" and stops
-        talking, so you can hear it without him.
+        <em>symmetric</em> (steps on the beat) and <em>a-symmetric</em> (one of the counts is a <em>sincopa</em>,
+        an off-beat step). His a-symmetric timelines draw the ticks unevenly, which reads as if the pulse itself
+        moved — it doesn't. The grid stays even; only the step is displaced. Then he says "Test Yourself" and
+        stops talking, so you can hear it without him.
       </p>
+      <p class="legend"><span><i class="dot-solid"></i> step on the beat</span><span><i class="dot-sync"></i> sincopa — off the beat</span><span><i class="tick-faint"></i> pulse</span></p>
     </div>
 
     <div class="patterns" id="patterns"></div>
@@ -716,43 +724,58 @@
      Each pattern = the beats his slide marks as steps, plus the timeline
      spacing he draws: symmetric = evenly spread, a-symmetric = the middle
      pair crowded together. Beat positions are in beats of a 4-beat phrase. */
+  /* The pulse is always the even 1-2-3-4 grid — his "a-symmetric" slides draw
+     the ticks unevenly, which reads as if the beat itself moved. It doesn't:
+     the step he counts as "2" is a sincopa, i.e. an off-beat step that lands
+     between beats 1 and 2. Grid steps are `steps`, off-beat ones are `sync`. */
   const PATTERNS = [
     {
       id: 'asym-1234',
       title: 'A-Symmetric rhythm 1 · 2 · 3 · 4',
-      ts: 18, asym: true, traspie: false,
-      ticks: [1, 2, 2.45, 4], steps: [1, 2, 2.45, 4],
-      note: 'All four beats used, but his a-symmetric timeline crowds the middle pair: step, step-step, step. This is the rocking walk.'
+      ts: 18, traspie: false,
+      steps: [1, 3, 4],
+      sync: [1.5],
+      note: 'The pulse stays even. Steps land on 1, 3 and 4 — the count he calls “2” is a sincopa, an off-beat step between 1 and 2. His slide draws the ticks unevenly, which reads as if the beat moves; it does not.'
     },
     {
       id: 'sym-13',
       title: 'Symmetric 1 · 3',
-      ts: 63, asym: false, traspie: false,
-      ticks: [1, 2, 3, 4], steps: [1, 3],
-      note: 'Two steps a bar, evenly spaced, beats 2 and 4 left empty. The most open, unhurried milonga walk.'
+      ts: 63, traspie: false,
+      steps: [1, 3],
+      sync: [],
+      note: 'Two steps a bar, both on the grid, beats 2 and 4 left empty. The most open, unhurried milonga walk.'
     },
     {
       id: 'tras-123',
       title: 'Traspié · A-Symmetric 1 · 2 · 3',
-      ts: 117, asym: true, traspie: true,
-      ticks: [1, 2, 2.45, 4], steps: [1, 2, 2.45],
-      note: 'Three steps with the crowded middle pair, then the quick double-time flick — the traspié.'
+      ts: 117, traspie: true,
+      steps: [1, 3],
+      sync: [1.5],
+      note: 'Same sincopa between 1 and 2, a step on 3, then the quick double-time flick — the traspié.'
     },
     {
       id: 'tras-123s',
       title: 'Traspié · Symmetric 1 · 2 · 3',
-      ts: 162, asym: false, traspie: true,
-      ticks: [1, 2, 3, 4], steps: [1, 2, 3],
+      ts: 162, traspie: true,
+      steps: [1, 2, 3],
+      sync: [],
       note: 'Even steps across the first three beats, with the traspié flick on the third. Beat 4 stays empty.'
     },
     {
       id: 'tras-134',
       title: 'Traspié · Symmetric 1 · 3 · 4',
-      ts: 216, asym: false, traspie: true,
-      ticks: [1, 2, 3, 4], steps: [1, 3, 4],
-      note: 'Beat 2 is skipped: step, wait, then two quick steps into the turn. The gap is what makes it cheeky.'
+      ts: 216, traspie: true,
+      steps: [1, 3, 4],
+      sync: [],
+      note: 'Beat 2 is skipped: step, wait, then two quick steps. The gap is what makes it feel cheeky.'
     }
   ];
+
+  function patternEvents(p){
+    const ev = p.steps.map(s => ({ p: s, k: 'step' }));
+    (p.sync || []).forEach(s => ev.push({ p: s, k: 'sync' }));
+    return ev.sort((a, b) => a.p - b.p);
+  }
 
   const bpm = { tango: 62, vals: 174, milonga: 104 };
 
@@ -868,7 +891,8 @@
     }
   }
 
-  // one bar of a milonga pattern: 4-beat pulse + a boom on every beat his slide marks as a step
+  // one bar of a milonga pattern: even 4-beat pulse, steps on the grid,
+  // and a sincopa that deliberately lands off the grid.
   function schedulePatternBar(t, cur){
     const p = cur.pattern;
     const b = cur.bpm || 104;
@@ -879,15 +903,24 @@
       VOICES.tick(when, 0.20);
       T.queue.push({time: when, type:'grid', id: p.id, i: i});
     }
-    p.steps.forEach((s, i) => {
-      const when = t + (s - 1) * spb;
-      VOICES.boom(when, i === 0 ? 1 : 0.82);
-      T.queue.push({time: when, type:'pat', id: p.id, i: i});
-      if(p.traspie && i === p.steps.length - 1){
-        VOICES.tap(when + spb * 0.28, 0.75);
-        T.queue.push({time: when + spb * 0.28, type:'pat', id: p.id, i: i});
+    const ev = patternEvents(p);
+    ev.forEach((e, i) => {
+      const when = t + (e.p - 1) * spb;
+      if(e.k === 'step'){
+        VOICES.boom(when, e.p === 1 ? 1 : 0.82);
+      } else {
+        // the sincopa: softer, brighter, and visibly off the pulse
+        VOICES.tap(when, 0.95);
+        VOICES.boom(when, 0.55);
       }
+      T.queue.push({time: when, type:'pat', id: p.id, i: i});
     });
+    if(p.traspie){
+      const last = ev[ev.length - 1];
+      const when = t + (last.p - 1) * spb + spb * 0.28;
+      VOICES.tap(when, 0.8);
+      T.queue.push({time: when, type:'pat', id: p.id, i: ev.length - 1});
+    }
     T.queue.sort((x, y) => x.time - y.time);
     advanceBar();
     return t + 4 * spb;
@@ -1048,18 +1081,27 @@
   function renderPatterns(){
     const host = document.getElementById('patterns');
     if(!host) return;
-    const W = 340, H = 104, pad = 28;
+    const W = 340, H = 108, pad = 28;
+    // ticks 1..4 always sit at even spacing: the pulse never moves
     const xf = b => pad + ((b - 1) / 3) * (W - 2 * pad);
     host.innerHTML = PATTERNS.map(p => {
+      const ev = patternEvents(p);
       let svg = '<svg class="tl" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + p.title.replace(/"/g,'') + '">';
-      svg += '<line x1="' + (pad - 10) + '" y1="66" x2="' + (W - pad + 10) + '" y2="66" stroke="rgba(242,236,230,.22)" stroke-width="1.5"/>';
-      p.ticks.forEach((tk, i) => {
-        const cx = xf(tk);
-        const stepped = p.steps.indexOf(tk) !== -1;
-        svg += '<line x1="' + cx + '" y1="52" x2="' + cx + '" y2="80" stroke="' + (stepped ? '#3fbcaa' : 'rgba(242,236,230,.3)') + '" stroke-width="' + (stepped ? 3 : 1.5) + '" stroke-linecap="round"/>';
-        svg += '<text class="num" data-i="' + i + '" x="' + cx + '" y="96" text-anchor="middle" fill="rgba(242,236,230,.5)" font-size="11">' + (i + 1) + '</text>';
-        if(stepped){
-          svg += '<circle class="pstep" data-i="' + p.steps.indexOf(tk) + '" cx="' + cx + '" cy="42" r="9" fill="#3fbcaa" opacity=".85"/>';
+      svg += '<line x1="' + (pad - 10) + '" y1="70" x2="' + (W - pad + 10) + '" y2="70" stroke="rgba(242,236,230,.22)" stroke-width="1.5"/>';
+      for(let i = 0; i < 4; i++){
+        const beat = i + 1;
+        const cx = xf(beat);
+        const onBeat = p.steps.indexOf(beat) !== -1;
+        svg += '<line x1="' + cx + '" y1="56" x2="' + cx + '" y2="84" stroke="' + (onBeat ? '#3fbcaa' : 'rgba(242,236,230,.28)') + '" stroke-width="' + (onBeat ? 3 : 1.5) + '" stroke-linecap="round"/>';
+        svg += '<text class="num" data-i="' + i + '" x="' + cx + '" y="100" text-anchor="middle" fill="rgba(242,236,230,.5)" font-size="11">' + beat + '</text>';
+      }
+      ev.forEach((e, i) => {
+        const cx = xf(e.p);
+        if(e.k === 'step'){
+          svg += '<circle class="pmark" data-i="' + i + '" cx="' + cx + '" cy="44" r="9" fill="#3fbcaa" opacity=".88"/>';
+        } else {
+          svg += '<circle class="pmark psync" data-i="' + i + '" cx="' + cx + '" cy="44" r="8" fill="none" stroke="#e8b04b" stroke-width="2.5"/>';
+          svg += '<text x="' + cx + '" y="27" text-anchor="middle" fill="#e8b04b" font-size="9.5" letter-spacing=".06em">SINC</text>';
         }
       });
       svg += '</svg>';
@@ -1099,7 +1141,7 @@
       if(n){ n.classList.remove('hit'); void n.getBoundingClientRect(); n.classList.add('hit'); }
       return;
     }
-    const el = card.querySelector('.pstep[data-i="' + i + '"]');
+    const el = card.querySelector('.pmark[data-i="' + i + '"]');
     if(el){ el.classList.remove('hit'); void el.getBoundingClientRect(); el.classList.add('hit'); }
   }
   function syncButtons(){ /* active state handled in pump */ }
