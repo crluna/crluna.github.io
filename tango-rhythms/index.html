@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three Rhythms — Tango · Vals · Milonga</title>
+<meta name="description" content="An interactive guide to the musicality of Argentine tango, vals and milonga: time signatures, tempo, rhythm and how they change the way you dance.">
+<meta name="theme-color" content="#0d0b10">
+<style>
+  :root{
+    --bg:#0d0b10;
+    --bg2:#131019;
+    --ink:#f2ece6;
+    --muted:#a79f9a;
+    --line:rgba(242,236,230,.12);
+    --tango:#e2603f;
+    --vals:#e8b04b;
+    --milonga:#3fbcaa;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 620px at 12% -8%, rgba(226,96,63,.16), transparent 62%),
+      radial-gradient(900px 560px at 92% 4%, rgba(232,176,75,.12), transparent 60%),
+      radial-gradient(1000px 700px at 50% 108%, rgba(63,188,170,.10), transparent 62%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  a{color:inherit;text-decoration-color:rgba(242,236,230,.35);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--vals)}
+
+  /* ---------- header ---------- */
+  header.top{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:linear-gradient(to bottom,rgba(13,11,16,.92),rgba(13,11,16,.62));
+    border-bottom:1px solid var(--line);
+  }
+  .top .wrap{display:flex;align-items:center;gap:18px;height:60px}
+  .brand{font-family:var(--serif);font-size:19px;letter-spacing:.02em;white-space:nowrap}
+  .brand b{font-weight:600}
+  nav{margin-left:auto;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);
+    text-decoration:none;padding:8px 11px;border-radius:999px;white-space:nowrap;
+    transition:color .2s,background .2s;
+  }
+  nav a:hover{color:var(--ink);background:rgba(242,236,230,.07)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:74px 0 54px;position:relative;overflow:hidden}
+  .kicker{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:7px 14px;margin-bottom:26px;
+  }
+  .kicker i{width:7px;height:7px;border-radius:50%;background:var(--tango);display:block;
+    box-shadow:0 0 0 3px rgba(226,96,63,.18)}
+  h1{
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.02;letter-spacing:-.02em;
+    margin:0 0 22px;max-width:20ch;
+  }
+  h1 .t{color:var(--tango)}
+  h1 .v{color:var(--vals)}
+  h1 .m{color:var(--milonga)}
+  .lede{max-width:60ch;color:#d6cec8;font-size:clamp(1.02rem,1.6vw,1.18rem);margin:0 0 34px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btn{
+    font:inherit;font-size:15px;font-weight:600;letter-spacing:.01em;
+    border-radius:999px;padding:13px 22px;border:1px solid transparent;cursor:pointer;
+    transition:transform .12s ease,background .2s,border-color .2s,color .2s;
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--ink);color:#121016}
+  .btn-primary:hover{background:#fff}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:rgba(242,236,230,.28)}
+  .btn-ghost:hover{border-color:var(--ink);background:rgba(242,236,230,.06)}
+  .hero-note{font-size:13.5px;color:var(--muted)}
+
+  /* waveform deco */
+  .wave{display:flex;align-items:flex-end;gap:5px;height:52px;margin-top:44px;opacity:.5}
+  .wave span{width:4px;border-radius:2px;background:linear-gradient(to top,rgba(242,236,230,.15),rgba(242,236,230,.6));animation:wave 2.6s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:scaleY(.28)}50%{transform:scaleY(1)}}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;border-top:1px solid var(--line)}
+  #styles{padding-bottom:34px}
+  .sec-head{margin-bottom:34px}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.01em;margin:0 0 12px;line-height:1.15}
+  .sub{color:var(--muted);max-width:66ch;margin:0}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+
+  /* ---------- style cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.cards{grid-template-columns:1fr}}
+  .card{
+    --c:var(--ink);
+    position:relative;border:1px solid var(--line);border-radius:18px;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+    padding:22px 20px 18px;display:flex;flex-direction:column;gap:14px;
+    transition:border-color .25s,box-shadow .3s,transform .3s,background .3s;
+  }
+  .card::before{
+    content:'';position:absolute;inset:-1px -1px auto;height:3px;border-radius:18px 18px 0 0;
+    background:var(--c);opacity:.55;transition:opacity .25s;
+  }
+  .card[data-active="true"]{
+    border-color:color-mix(in srgb,var(--c) 55%,transparent);
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 30%,transparent),0 18px 50px -22px color-mix(in srgb,var(--c) 70%,transparent);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c) 12%,transparent),rgba(255,255,255,.015));
+  }
+  .card[data-active="true"]::before{opacity:1}
+  .card-top{display:flex;align-items:baseline;gap:10px;justify-content:space-between}
+  .card h3{font-family:var(--serif);font-size:1.55rem;margin:0;font-weight:600;letter-spacing:-.01em}
+  .sig{
+    font-size:11.5px;letter-spacing:.1em;padding:4px 9px;border-radius:999px;
+    border:1px solid color-mix(in srgb,var(--c) 45%,transparent);
+    color:color-mix(in srgb,var(--c) 85%,white);white-space:nowrap;
+  }
+  .say{font-size:13.5px;color:var(--muted);margin:-4px 0 0}
+  .say b{color:color-mix(in srgb,var(--c) 80%,white);font-weight:600}
+
+  /* beat grid */
+  .meter{
+    --cols:4;
+    display:grid;gap:6px;margin:4px 0 2px;
+    grid-template-columns:repeat(var(--cols),1fr);
+  }
+  .beat{
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+    padding:9px 0 6px;border-radius:11px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+  }
+  .beat .dots{display:flex;gap:5px;align-items:center;height:16px}
+  .dot{
+    --a:.25;width:11px;height:11px;border-radius:50%;
+    background:color-mix(in srgb,var(--c) calc(16% + var(--a) * 84%),rgba(255,255,255,.16));
+    border:1px solid color-mix(in srgb,var(--c) 55%,transparent);
+    opacity:calc(.55 + var(--a) * .45);
+  }
+  .beat .num{font-size:10.5px;color:var(--muted);letter-spacing:.08em}
+  .beat.flash{animation:beatpulse .34s ease-out}
+  .beat.flash .dot{box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 26%,transparent)}
+  @keyframes beatpulse{0%{background:color-mix(in srgb,var(--c) 26%,transparent)}100%{background:rgba(255,255,255,.03)}}
+
+  .transport{display:flex;align-items:center;gap:12px;margin-top:2px}
+  .play{
+    flex:1;font:inherit;font-weight:600;font-size:14.5px;
+    border-radius:11px;padding:11px 14px;cursor:pointer;
+    border:1px solid color-mix(in srgb,var(--c) 45%,transparent);
+    background:color-mix(in srgb,var(--c) 16%,transparent);
+    color:color-mix(in srgb,var(--c) 88%,white);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:background .2s,transform .12s;
+  }
+  .play:hover{background:color-mix(in srgb,var(--c) 26%,transparent)}
+  .play:active{transform:translateY(1px)}
+  .play[aria-pressed="true"]{
+    background:color-mix(in srgb,var(--c) 88%,white);
+    color:#12100f;border-color:transparent;
+  }
+  .tempo{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+  .tempo .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted)}
+  .tempo .val{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;font-size:13px}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;cursor:pointer;margin:0;
+  }
+  input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:2px;background:rgba(255,255,255,.16)}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:15px;height:15px;border-radius:50%;margin-top:-6px;
+    background:var(--c);border:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 18%,transparent);
+  }
+  input[type=range]::-moz-range-track{height:3px;border-radius:2px;background:rgba(255,255,255,.16)}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:var(--c)}
+
+  .opts{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+  .opt{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:#cfc7c1;cursor:pointer;line-height:1.35}
+  .opt input{
+    appearance:none;-webkit-appearance:none;flex:0 0 16px;width:16px;height:16px;margin:1px 0 0;
+    border-radius:5px;border:1px solid rgba(255,255,255,.3);background:transparent;cursor:pointer;position:relative;
+    transition:background .15s,border-color .15s;
+  }
+  .opt input:checked{background:var(--c);border-color:var(--c)}
+  .opt input:checked::after{content:'';position:absolute;inset:0;background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3.5 8.4l3 3 6-6.4' fill='none' stroke='%23120f0f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/14px no-repeat}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px}
+  .chip{font-size:11.5px;letter-spacing:.02em;padding:4px 9px;border-radius:999px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);color:#cbc3bd}
+
+  /* ---------- compare bar ---------- */
+  .compare{
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+    margin-top:20px;padding:16px 18px;border-radius:14px;border:1px dashed rgba(242,236,230,.18);
+    background:rgba(255,255,255,.025);
+  }
+  .compare p{margin:0;font-size:14px;color:var(--muted)}
+  .compare p b{color:var(--ink)}
+
+  /* ---------- tempo vs rhythm ---------- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:820px){.two{grid-template-columns:1fr}}
+  .panel{
+    border:1px solid var(--line);border-radius:16px;padding:22px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+  }
+  .panel h3{font-family:var(--serif);font-size:1.3rem;margin:0 0 8px;font-weight:600}
+  .panel p{margin:0 0 10px;font-size:15px;color:#cfc7c1}
+  .panel p:last-child{margin-bottom:0}
+  .panel .tag{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+
+  /* ---------- table ---------- */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.022)}
+  table{border-collapse:collapse;width:100%;min-width:660px;font-size:14.5px}
+  th,td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  thead th{
+    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;
+    background:rgba(255,255,255,.03);position:sticky;top:0;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  th:first-child,td:first-child{color:var(--muted);font-size:13px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+  td.tango{color:#f0a08c}
+  td.vals{color:#f0cb84}
+  td.milonga{color:#8cd9cd}
+  tbody tr:hover{background:rgba(255,255,255,.025)}
+
+  /* stacked table on phones */
+  @media(max-width:700px){
+    nav{display:none}
+    .tablewrap{overflow:visible;border:none;background:none}
+    table{min-width:0;display:block;font-size:14px}
+    thead{display:none}
+    tbody,tr,td{display:block;width:100%}
+    tbody tr{
+      border:1px solid var(--line);border-radius:14px;margin-bottom:12px;
+      background:rgba(255,255,255,.028);overflow:hidden;padding:4px 0;
+    }
+    td{padding:9px 15px;border-bottom:none;display:grid;grid-template-columns:74px 1fr;gap:12px;align-items:baseline}
+    td::before{
+      content:attr(data-label);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--muted);font-weight:600;padding-top:2px;
+    }
+    td.rowhead{
+      display:block;font-size:11px;letter-spacing:.16em;color:var(--muted);
+      background:rgba(255,255,255,.04);padding:9px 15px;border-bottom:1px solid var(--line);margin-bottom:2px;
+    }
+    td.rowhead::before{content:none}
+  }
+  @media(max-width:480px){
+    .hero{padding:52px 0 34px}
+    .brand{font-size:17px}
+    .quiz{padding:20px 16px}
+    .answers .btn{min-width:0;flex:1 1 30%;padding:12px 10px;font-size:14px}
+  }
+
+  /* ---------- quiz ---------- */
+  .quiz{
+    border:1px solid var(--line);border-radius:18px;padding:26px;
+    background:
+      radial-gradient(700px 300px at 50% -40%, rgba(232,176,75,.10), transparent 70%),
+      rgba(255,255,255,.025);
+    text-align:center;
+  }
+  .quiz .score{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .quiz .score b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .quiz .q{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.7rem);margin:0 0 20px}
+  .answers{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:18px}
+  .answers .btn{
+    border-color:rgba(242,236,230,.55);
+    background:rgba(255,255,255,.10);
+    color:#fff;
+    min-width:120px;justify-content:center;
+  }
+  .answers .btn:hover{background:rgba(255,255,255,.2);border-color:#fff}
+  .answers .btn[disabled]{opacity:.45;cursor:default}
+  .answers .btn.ok{background:rgba(63,188,170,.22);border-color:var(--milonga);color:#c9f4ec}
+  .answers .btn.no{background:rgba(226,96,63,.18);border-color:var(--tango);color:#ffd0c4}
+  .feedback{min-height:24px;font-size:14.5px;color:var(--muted);margin-bottom:18px}
+  .feedback b{color:var(--ink)}
+  .quiz-foot{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- orchestras ---------- */
+  .orq{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .orq .panel{padding:18px}
+  .orq h4{font-family:var(--serif);font-size:1.1rem;margin:0 0 6px;font-weight:600}
+  .orq p{font-size:14px;margin:0;color:#c8c0ba}
+  .orq .who{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+
+  /* ---------- footer ---------- */
+  footer{padding:44px 0 64px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+  footer h4{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  footer ul{margin:0 0 22px;padding-left:18px}
+  footer li{margin-bottom:5px}
+  .foot-note{font-size:12.5px;color:#7c7570;max-width:70ch}
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><b>Three</b> Rhythms</div>
+    <nav>
+      <a href="#styles">The three</a>
+      <a href="#tempo">Tempo vs rhythm</a>
+      <a href="#compare">Compare</a>
+      <a href="#quiz">Ear test</a>
+      <a href="#orchestras">Orchestras</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="hero wrap">
+  <div class="kicker"><i></i> Interactive guide to Argentine tango musicality</div>
+  <h1>One dance, <span class="t">three</span> <span class="v">different</span> <span class="m">clocks</span>.</h1>
+  <p class="lede">
+    Tango, vals and milonga share an embrace — and almost nothing else rhythmically.
+    <strong>4/4 walking drama</strong>, <strong>3/4 sweeping rotation</strong>, <strong>2/4 relentless bounce</strong>.
+    Press play, hear the difference, then count along.
+  </p>
+  <div class="hero-cta">
+    <button class="btn btn-primary" id="heroPlay">▶ Play the three, back to back</button>
+    <button class="btn btn-ghost" id="stopAll">■ Stop</button>
+    <span class="hero-note">Everything is synthesised live in your browser. No files, no plugins.</span>
+  </div>
+  <div class="wave" id="wave" aria-hidden="true"></div>
+</div>
+
+<section id="styles">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 01</p>
+      <h2>Hear each rhythm</h2>
+      <p class="sub">Each card plays one bar, looping. The dots show the accent pattern the orchestra actually plays — not every subdivision needs a step.</p>
+    </div>
+
+    <div class="cards" id="cards">
+
+      <!-- TANGO -->
+      <article class="card" data-style="tango" style="--c:var(--tango)">
+        <div class="card-top">
+          <h3>Tango</h3>
+          <span class="sig">4/4 · 2/4</span>
+        </div>
+        <p class="say">Count: <b>1 – 2 – 3 – 4</b> · marcato walk</p>
+        <div class="meter" data-cols="4"></div>
+        <div class="transport">
+          <button class="play" data-play="tango" aria-pressed="false">▶ Play tango</button>
+        </div>
+        <div class="tempo">
+          <div class="row"><span>Walking beat</span><span class="val"><span data-bpm="tango">62</span> BPM</span></div>
+          <input type="range" min="46" max="88" value="62" data-range="tango" aria-label="Tango tempo">
+        </div>
+        <div class="opts" data-opts="tango">
+          <label class="opt"><input type="checkbox" data-opt="tango.sync" checked> Syncopation on the “and” of 2</label>
+          <label class="opt"><input type="checkbox" data-opt="tango.pause"> Dramatic pauses (silence on beats 3–4, every other bar)</label>
+          <label class="opt"><input type="checkbox" data-opt="tango.rubato"> Rubato — stretch and compress the bar</label>
+        </div>
+        <div class="chips">
+          <span class="chip">Melancholic</span><span class="chip">Sudden stops</span><span class="chip">Long strides</span><span class="chip">Freeze on a beat</span>
+        </div>
+      </article>
+
+      <!-- VALS -->
+      <article class="card" data-style="vals" style="--c:var(--vals)">
+        <div class="card-top">
+          <h3>Vals</h3>
+          <span class="sig">3/4</span>
+        </div>
+        <p class="say">Count: <b>1 – 2 – 3</b> · one sweep per bar</p>
+        <div class="meter" data-cols="3"></div>
+        <div class="transport">
+          <button class="play" data-play="vals" aria-pressed="false">▶ Play vals</button>
+        </div>
+        <div class="tempo">
+          <div class="row"><span>Per beat (≈ one pulse per bar)</span><span class="val"><span data-bpm="vals">174</span> BPM</span></div>
+          <input type="range" min="140" max="204" value="174" data-range="vals" aria-label="Vals tempo">
+        </div>
+        <div class="opts" data-opts="vals">
+          <label class="opt"><input type="checkbox" data-opt="vals.stepOne"> Dancers' trick: step only on beat 1, let 2–3 fly</label>
+        </div>
+        <div class="chips">
+          <span class="chip">Airy</span><span class="chip">Circular</span><span class="chip">Giros</span><span class="chip">Hardly any stops</span>
+        </div>
+      </article>
+
+      <!-- MILONGA -->
+      <article class="card" data-style="milonga" style="--c:var(--milonga)">
+        <div class="card-top">
+          <h3>Milonga</h3>
+          <span class="sig">2/4</span>
+        </div>
+        <p class="say">Say it: <b>boom – ch – boom – chicka</b> · “café con pan”</p>
+        <div class="meter" data-cols="2"></div>
+        <div class="transport">
+          <button class="play" data-play="milonga" aria-pressed="false">▶ Play milonga</button>
+        </div>
+        <div class="tempo">
+          <div class="row"><span>Main beat</span><span class="val"><span data-bpm="milonga">104</span> BPM</span></div>
+          <input type="range" min="82" max="128" value="104" data-range="milonga" aria-label="Milonga tempo">
+        </div>
+        <div class="opts" data-opts="milonga">
+          <label class="opt"><input type="checkbox" data-opt="milonga.traspie" checked> Traspié — the double-time flick on beat 2</label>
+        </div>
+        <div class="chips">
+          <span class="chip">Playful</span><span class="chip">Relentless</span><span class="chip">Small steps</span><span class="chip">Ground-connected</span>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="compare">
+      <p><b>Can you tell them apart?</b> The ear test below plays a hidden pattern — name the style.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="compareBtn" style="padding:10px 18px;font-size:14px">🔁 Back-to-back demo</button>
+        <a class="btn btn-ghost" href="#quiz" style="padding:10px 18px;font-size:14px;text-decoration:none">Take the ear test →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tempo">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 02</p>
+      <h2>Tempo is the speed. Rhythm is the shape.</h2>
+      <p class="sub">Two songs can share a tempo and feel nothing alike, because rhythm is the pattern of accents laid over that pulse. Turn the tempo slider on any card — the shape stays, only the urgency changes.</p>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <p class="tag">Tempo</p>
+        <h3>The ticking pulse</h3>
+        <p>Measured in beats per minute. It sets how much space you have per step: slow tempo, long strides and time to decorate; fast tempo, compact steps and quick reactions.</p>
+        <p><strong>Typical:</strong> tango ≈ 60–70 BPM on the walking beat · vals ≈ 160–190 counting every beat (or 55–65 felt as one pulse per bar) · milonga ≈ 90–120 per main beat.</p>
+      </div>
+      <div class="panel">
+        <p class="tag">Rhythm</p>
+        <h3>The shape on top</h3>
+        <p>The grouping of notes, the accents, the gaps. It decides where you <em>could</em> step, where you <em>should</em> step, and where you deliberately don't.</p>
+        <p><strong>Elasticity:</strong> tango high (rubato, silences, frozen steps) · vals moderate (steady enough to keep rotation flowing) · milonga low (locked like a clock, that's the bounce).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 03</p>
+      <h2>Side by side</h2>
+      <p class="sub">The same three questions — signature, rhythm, character — answered three different ways.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Tango</th><th>Vals</th><th>Milonga</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rowhead">Metre</td>
+            <td class="tango" data-label="Tango">4/4 or 2/4</td>
+            <td class="vals" data-label="Vals">3/4</td>
+            <td class="milonga" data-label="Milonga">2/4</td>
+          </tr>
+          <tr>
+            <td class="rowhead">Count</td>
+            <td class="tango" data-label="Tango">1 – 2 – 3 – 4</td>
+            <td class="vals" data-label="Vals">1 – 2 – 3</td>
+            <td class="milonga" data-label="Milonga">boom – ch – boom – chicka</td>
+          </tr>
+          <tr>
+            <td class="rowhead">Tempo</td>
+            <td class="tango" data-label="Tango">Moderate, ≈60–70 on the walk</td>
+            <td class="vals" data-label="Vals">Brisk, ≈160–190 per beat / 55–65 per bar</td>
+            <td class="milonga" data-label="Milonga">Fast, ≈90–120 per main beat</td>
+          </tr>
+          <tr>
+            <td class="rowhead">Core rhythm</td>
+            <td class="tango" data-label="Tango">Marcato walk + heavy syncopation</td>
+            <td class="vals" data-label="Vals">Rolling triple, accent on 1</td>
+            <td class="milonga" data-label="Milonga">Habanera / candombe syncopation</td>
+          </tr>
+          <tr>
+            <td class="rowhead">Pauses</td>
+            <td class="tango" data-label="Tango">Frequent, dramatic, stretchable</td>
+            <td class="vals" data-label="Vals">Minimal — flow keeps the rotation</td>
+            <td class="milonga" data-label="Milonga">Almost none — the drive is the point</td>
+          </tr>
+          <tr>
+            <td class="rowhead">Character</td>
+            <td class="tango" data-label="Tango">Melancholic, dramatic, passionate</td>
+            <td class="vals" data-label="Vals">Airy, romantic, joyful, sweeping</td>
+            <td class="milonga" data-label="Milonga">Playful, cheeky, high-energy</td>
+          </tr>
+          <tr>
+            <td class="rowhead">How it moves</td>
+            <td class="tango" data-label="Tango">Long strides, freezes, tension</td>
+            <td class="vals" data-label="Vals">Continuous turning, giros, lift</td>
+            <td class="milonga" data-label="Milonga">Small compact steps, close to the floor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 04</p>
+      <h2>Ear test</h2>
+      <p class="sub">Two bars, hidden style, randomised tempo. Trust your feet: does it walk, does it sweep, or does it bounce?</p>
+    </div>
+    <div class="quiz">
+      <div class="score">Score <b id="score">0</b> / <b id="asked">0</b></div>
+      <p class="q" id="quizQ">Ready when you are.</p>
+      <div class="answers" id="answers">
+        <button class="btn" data-guess="tango">Tango</button>
+        <button class="btn" data-guess="vals">Vals</button>
+        <button class="btn" data-guess="milonga">Milonga</button>
+      </div>
+      <div class="feedback" id="feedback">Press start, listen to the pattern, then answer.</div>
+      <div class="quiz-foot">
+        <button class="btn btn-primary" id="quizStart">▶ Start the ear test</button>
+        <button class="btn btn-ghost" id="quizReset">Reset score</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="orchestras">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 05</p>
+      <h2>Orchestras as rhythm teachers</h2>
+      <p class="sub">Once you hear the three grooves, you start hearing how each orchestra handles tempo — who pushes, who stretches, who never lets go.</p>
+    </div>
+    <div class="orq">
+      <div class="panel">
+        <p class="who">D'Arienzo</p>
+        <h4>Staccato drive</h4>
+        <p>The rhythm section is the melody. Sharp marcato, clean accents, almost milonga-like energy — the classic “rhythm is everything” school.</p>
+      </div>
+      <div class="panel">
+        <p class="who">Di Sarli</p>
+        <h4>Elegant and even</h4>
+        <p>Steady, unhurried beat with a lush melodic line above it. Great for learning to walk on the pulse instead of chasing the notes.</p>
+      </div>
+      <div class="panel">
+        <p class="who">Pugliese</p>
+        <h4>Rubato and drama</h4>
+        <p>Slow, dense, enormous stretches and silences. The lesson in elasticity: the tempo is a suggestion, the tension is the point.</p>
+      </div>
+      <div class="panel">
+        <p class="who">Biagi · Troilo · Canaro</p>
+        <h4>Play and colour</h4>
+        <p>Biagi bounces, Troilo turns on a dime, Canaro pours the vals. Different accents over the same three skeletons.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>Sources &amp; further listening</h4>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=g-5gxGYxJzc" target="_blank" rel="noopener">Breakdown of tango / vals / milonga time signatures and physicality</a></li>
+      <li><a href="https://www.be-tango.be/en/blog/tango-vals-milonga-differences/" target="_blank" rel="noopener">be-tango.be — Tango, vals, milonga: the differences</a></li>
+      <li><a href="https://homeromanzitango.com/guides/tango-milonga-vals-explained/" target="_blank" rel="noopener">Homero Manzi Tango — Tango, milonga, vals explained</a></li>
+      <li><a href="https://tango-space.com/three-tango-rhythms-keys-dancing-tango-vals-milonga/" target="_blank" rel="noopener">Tango Space — Three tango rhythms</a></li>
+      <li><a href="https://tangodelight.com.au/the-difference-between-tango-milonga-and-vals-music/" target="_blank" rel="noopener">Tango Delight — The difference between tango, milonga and vals music</a></li>
+      <li><a href="https://www.youtube.com/watch?v=q4N5Epycfgo" target="_blank" rel="noopener">Video: hear the three styles side by side</a></li>
+    </ul>
+    <p class="foot-note">All audio is generated live with the Web Audio API at the tempo you choose — no recordings, no copyright. The patterns are teaching simplifications: real orchestras ornament, syncopate and stretch them constantly.</p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ------------------------------------------------------------------ *
+   *  Style definitions
+   * ------------------------------------------------------------------ */
+  const STYLES = {
+    tango: {
+      meter: 4, sub: 2,
+      hits: [
+        {b:0,s:0,a:1.00,v:'boom'},
+        {b:1,s:0,a:0.40,v:'tick'},
+        {b:2,s:0,a:0.80,v:'boom'},
+        {b:3,s:0,a:0.40,v:'tick'}
+      ],
+      extras: [
+        {id:'sync', hits:[{b:1,s:1,a:0.58,v:'tap'}]}
+      ]
+    },
+    vals: {
+      meter: 3, sub: 2,
+      hits: [
+        {b:0,s:0,a:1.00,v:'boom'},
+        {b:1,s:0,a:0.52,v:'chick'},
+        {b:2,s:0,a:0.52,v:'chick'}
+      ],
+      extras: []
+    },
+    milonga: {
+      meter: 2, sub: 4,
+      hits: [
+        {b:0,s:0,a:1.00,v:'boom'},
+        {b:0,s:2,a:0.46,v:'chick'},
+        {b:1,s:0,a:0.82,v:'boom'},
+        {b:1,s:2,a:0.50,v:'chick'}
+      ],
+      extras: [
+        {id:'traspie', hits:[{b:1,s:3,a:0.60,v:'tap'}]}
+      ]
+    }
+  };
+
+  const bpm = { tango: 62, vals: 174, milonga: 104 };
+
+  const opts = {
+    tango:   { sync: true, pause: false, rubato: false },
+    vals:    { stepOne: false },
+    milonga: { traspie: true }
+  };
+
+  /* ------------------------------------------------------------------ *
+   *  Audio engine
+   * ------------------------------------------------------------------ */
+  let ctx = null, master = null, noiseBuf = null;
+
+  function initAudio(){
+    if(!ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC();
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18; comp.knee.value = 22;
+      comp.ratio.value = 3; comp.attack.value = 0.003; comp.release.value = 0.22;
+      master = ctx.createGain();
+      master.gain.value = 0.85;
+      master.connect(comp);
+      comp.connect(ctx.destination);
+      // short noise buffer reused by all percussive voices
+      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.25), ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+    }
+    if(ctx.state === 'suspended') ctx.resume();
+  }
+
+  function boom(when, accent){
+    const out = ctx.createGain();
+    out.gain.setValueAtTime(0.0001, when);
+    out.gain.exponentialRampToValueAtTime(Math.max(0.02, 0.95*accent), when+0.006);
+    out.gain.exponentialRampToValueAtTime(0.0001, when+0.34);
+    out.connect(master);
+
+    const o = ctx.createOscillator();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(132, when);
+    o.frequency.exponentialRampToValueAtTime(54, when+0.10);
+    o.connect(out);
+    o.start(when); o.stop(when+0.36);
+
+    // attack transient
+    const n = ctx.createBufferSource();
+    n.buffer = noiseBuf;
+    const nf = ctx.createBiquadFilter();
+    nf.type = 'bandpass'; nf.frequency.value = 1100; nf.Q.value = 0.9;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.30*accent, when);
+    ng.gain.exponentialRampToValueAtTime(0.0001, when+0.035);
+    n.connect(nf); nf.connect(ng); ng.connect(master);
+    n.start(when); n.stop(when+0.06);
+  }
+
+  function click(when, accent, freq, decay, gain){
+    const n = ctx.createBufferSource();
+    n.buffer = noiseBuf;
+    const f = ctx.createBiquadFilter();
+    f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = 4.5;
+    const g = ctx.createGain();
+    const peak = Math.max(0.008, gain*accent);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(peak, when+0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, when+decay);
+    n.connect(f); f.connect(g); g.connect(master);
+    n.start(when); n.stop(when+decay+0.02);
+  }
+
+  const VOICES = {
+    boom:  (t,a)=> boom(t,a),
+    tick:  (t,a)=> click(t,a,1750,0.045,0.16),
+    chick: (t,a)=> click(t,a,2450,0.055,0.26),
+    tap:   (t,a)=> click(t,a,3200,0.032,0.20)
+  };
+
+  /* ------------------------------------------------------------------ *
+   *  Transport
+   * ------------------------------------------------------------------ */
+  const T = {
+    playing:false, seq:[], idx:0, barsLeft:0, bar:0,
+    nextBar:0, timer:null, queue:[], endTimer:null, mode:null, gen:0
+  };
+
+  function buildHits(key, barIndex, o){
+    const st = STYLES[key];
+    let hits = st.hits.map(h => Object.assign({}, h));
+    (st.extras || []).forEach(ex => {
+      if(o[ex.id]) hits = hits.concat(ex.hits.map(h => Object.assign({}, h)));
+    });
+    if(key === 'tango' && o.pause && (barIndex % 2 === 1)){
+      hits = hits.filter(h => h.b < 2);
+    }
+    if(key === 'vals' && o.stepOne){
+      hits = hits.map(h => h.b > 0 ? Object.assign({}, h, {a:0.14, v:'tick'}) : h);
+    }
+    return hits.sort((x,y) => (x.b + x.s/STYLES[key].sub) - (y.b + y.s/STYLES[key].sub));
+  }
+
+  function scheduleBar(t){
+    const cur = T.seq[T.idx];
+    if(!cur) return t;
+    const st = STYLES[cur.key];
+    const o = cur.opts || opts[cur.key];
+    const b = cur.bpm || bpm[cur.key];
+    const stretch = (cur.key === 'tango' && o.rubato) ? (0.86 + Math.random()*0.28) : 1;
+    const spb = (60 / b) * stretch;
+    const hits = buildHits(cur.key, T.bar, o);
+
+    T.queue.push({time: t - 0.002, type:'bar', key: cur.key, bar: T.bar});
+    hits.forEach(h => {
+      const when = t + (h.b + h.s / st.sub) * spb;
+      (VOICES[h.v] || VOICES.tick)(when, h.a);
+      T.queue.push({time: when, type:'hit', key: cur.key, slot: h.b*st.sub + h.s, a: h.a});
+    });
+    T.queue.sort((x,y) => x.time - y.time);
+
+    T.bar++;
+    T.barsLeft--;
+    if(T.barsLeft <= 0){
+      T.idx++;
+      if(T.idx < T.seq.length){
+        T.barsLeft = T.seq[T.idx].bars;
+        T.bar = 0;
+      }
+    }
+    return t + st.meter * spb;
+  }
+
+  function scheduler(){
+    while(T.playing && T.nextBar < ctx.currentTime + 0.22){
+      if(T.idx >= T.seq.length){ finish(); return; }
+      T.nextBar = scheduleBar(T.nextBar);
+    }
+  }
+
+  function finish(){
+    const endT = T.nextBar;
+    const gen = T.gen;
+    const mode = T.mode;
+    T.playing = false;
+    if(T.timer){ clearInterval(T.timer); T.timer = null; }
+    const wait = Math.max(0, (endT - ctx.currentTime) * 1000) + 160;
+    T.endTimer = setTimeout(() => {
+      if(gen !== T.gen) return;           // a new run took over meanwhile
+      if(mode === 'quiz'){ setQuizBusy(false); }
+      else { clearActive(); }
+      T.mode = null;
+    }, wait);
+  }
+
+  function start(seq, mode){
+    initAudio();
+    stop(false);
+    T.seq = seq; T.idx = 0; T.bar = 0; T.barsLeft = seq[0].bars;
+    T.queue = []; T.mode = mode || 'single'; T.playing = true; T.gen++;
+    T.nextBar = ctx.currentTime + 0.10;
+    T.timer = setInterval(scheduler, 25);
+    scheduler();
+    syncButtons();
+  }
+
+  function stop(resetUI){
+    T.playing = false;
+    if(T.timer){ clearInterval(T.timer); T.timer = null; }
+    if(T.endTimer){ clearTimeout(T.endTimer); T.endTimer = null; }
+    T.gen++;
+    T.seq = []; T.idx = 0; T.queue = []; T.mode = null;
+    if(resetUI !== false){ clearActive(); syncButtons(); }
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Visuals
+   * ------------------------------------------------------------------ */
+  function buildMeters(){
+    document.querySelectorAll('.card').forEach(card => {
+      const key = card.dataset.style;
+      const st = STYLES[key];
+      const meter = card.querySelector('.meter');
+      meter.style.setProperty('--cols', st.meter);
+      let html = '';
+      for(let b=0;b<st.meter;b++){
+        let dots = '';
+        for(let s=0;s<st.sub;s++) dots += '<span class="dot"></span>';
+        html += '<div class="beat" data-beat="'+b+'" data-slot="'+(b*st.sub)+'">'
+              +   '<div class="dots">'+dots+'</div>'
+              +   '<span class="num">'+(b+1)+'</span>'
+              + '</div>';
+      }
+      meter.innerHTML = html;
+      // accent preview from the base pattern
+      const hits = buildHits(key, 0, opts[key]);
+      meter.querySelectorAll('.beat').forEach(beatEl => {
+        const base = +beatEl.dataset.slot;
+        beatEl.querySelectorAll('.dot').forEach((d,i) => {
+          const h = hits.find(x => (x.b*st.sub + x.s) === base + i);
+          d.style.setProperty('--a', h ? h.a.toFixed(2) : '0.12');
+        });
+      });
+    });
+  }
+
+  function refreshAccents(key){
+    const card = document.querySelector('.card[data-style="'+key+'"]');
+    if(!card) return;
+    const st = STYLES[key];
+    const hits = buildHits(key, 0, opts[key]);
+    card.querySelectorAll('.beat').forEach(beatEl => {
+      const base = +beatEl.dataset.slot;
+      beatEl.querySelectorAll('.dot').forEach((d,i) => {
+        const h = hits.find(x => (x.b*st.sub + x.s) === base + i);
+        d.style.setProperty('--a', h ? h.a.toFixed(2) : '0.12');
+      });
+    });
+  }
+
+  function flashSlot(key, slot, accent){
+    const card = document.querySelector('.card[data-style="'+key+'"]');
+    if(!card) return;
+    const sub = STYLES[key].sub;
+    const el = card.querySelector('.dot[data-slot-i="'+slot+'"]');
+    if(el){
+      el.animate(
+        [{transform:'scale(1)'},{transform:'scale('+(1 + accent*1.0)+')'},{transform:'scale(1)'}],
+        {duration: 210, easing:'ease-out'}
+      );
+    }
+    const beat = card.querySelector('.beat[data-beat="'+Math.floor(slot/sub)+'"]');
+    if(beat){
+      beat.classList.remove('flash');
+      void beat.offsetWidth;
+      beat.classList.add('flash');
+    }
+  }
+
+  function setActive(key){
+    document.querySelectorAll('.card').forEach(c => {
+      c.dataset.active = (c.dataset.style === key) ? 'true' : 'false';
+    });
+    document.querySelectorAll('.play').forEach(b => {
+      const on = b.dataset.play === key;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.textContent = on ? '■ Stop' : '▶ Play ' + b.dataset.play;
+    });
+  }
+  function clearActive(){
+    document.querySelectorAll('.card').forEach(c => c.dataset.active = 'false');
+    document.querySelectorAll('.play').forEach(b => {
+      b.setAttribute('aria-pressed','false');
+      b.textContent = '▶ Play ' + b.dataset.play;
+    });
+  }
+  function syncButtons(){ /* active state handled in pump */ }
+
+  // give every dot an index attribute for fast lookup
+  function indexDots(){
+    document.querySelectorAll('.card').forEach(card => {
+      const st = STYLES[card.dataset.style];
+      card.querySelectorAll('.beat').forEach(beatEl => {
+        const base = +beatEl.dataset.slot;
+        beatEl.querySelectorAll('.dot').forEach((d,i) => {
+          const idx = base + i;
+          d.dataset.slotI = idx;
+          beatEl.dataset.slotI = idx - i; // beat carries its first slot
+        });
+      });
+    });
+  }
+
+  function raf(){
+    if(ctx && T.queue.length){
+      const now = ctx.currentTime;
+      while(T.queue.length && T.queue[0].time <= now + 0.03){
+        const e = T.queue.shift();
+        if(e.type === 'bar'){ setActive(e.key); }
+        else { flashSlot(e.key, e.slot, e.a); }
+      }
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  UI wiring
+   * ------------------------------------------------------------------ */
+  function playOne(key){
+    if(T.playing && T.mode === 'single' && T.seq.length === 1 && T.seq[0].key === key){
+      stop(); return;
+    }
+    start([{key: key, bars: 100000}], 'single');
+    setActive(key);
+  }
+
+  document.querySelectorAll('.play').forEach(btn => {
+    btn.addEventListener('click', () => playOne(btn.dataset.play));
+  });
+
+  document.querySelectorAll('[data-range]').forEach(slider => {
+    slider.addEventListener('input', () => {
+      const key = slider.dataset.range;
+      bpm[key] = +slider.value;
+      document.querySelector('[data-bpm="'+key+'"]').textContent = slider.value;
+    });
+  });
+
+  document.querySelectorAll('[data-opt]').forEach(box => {
+    box.addEventListener('change', () => {
+      const [key, name] = box.dataset.opt.split('.');
+      opts[key][name] = box.checked;
+      refreshAccents(key);
+    });
+  });
+
+  document.getElementById('stopAll').addEventListener('click', () => { stop(); resetQuiz(); });
+
+  document.getElementById('compareBtn').addEventListener('click', () => {
+    stop();
+    start([
+      {key:'tango',   bars:2},
+      {key:'vals',    bars:2},
+      {key:'milonga', bars:2}
+    ], 'compare');
+  });
+
+  document.getElementById('heroPlay').addEventListener('click', () => {
+    document.getElementById('compareBtn').click();
+    document.getElementById('styles').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  // wave decoration
+  (function(){
+    const w = document.getElementById('wave');
+    let html = '';
+    for(let i=0;i<64;i++){
+      const h = 8 + Math.round(Math.abs(Math.sin(i*0.7))*40);
+      html += '<span style="height:'+h+'px;animation-delay:'+(i*0.055).toFixed(2)+'s"></span>';
+    }
+    w.innerHTML = html;
+  })();
+
+  /* ------------------------------------------------------------------ *
+   *  Quiz
+   * ------------------------------------------------------------------ */
+  const quiz = { correct:0, asked:0, answer:null, state:'idle', busy:false };
+
+  const qScore = document.getElementById('score');
+  const qAsked = document.getElementById('asked');
+  const qText  = document.getElementById('quizQ');
+  const qFeed  = document.getElementById('feedback');
+  const answerBtns = Array.from(document.querySelectorAll('[data-guess]'));
+
+  function setQuizBusy(busy){
+    quiz.busy = busy;
+    answerBtns.forEach(b => { b.disabled = busy; });
+  }
+
+  function pickStyle(){
+    const keys = ['tango','vals','milonga'];
+    let k = keys[Math.floor(Math.random()*3)];
+    if(quiz.answer && keys.length > 1 && k === quiz.answer) k = keys[(keys.indexOf(k)+1) % 3];
+    return k;
+  }
+
+  function askQuestion(){
+    stop();
+    const key = pickStyle();
+    quiz.answer = key;
+    quiz.state = 'awaiting';
+
+    const ranges = { tango:[54,74], vals:[152,192], milonga:[86,124] };
+    const r = ranges[key];
+    const b = Math.round(r[0] + Math.random()*(r[1]-r[0]));
+
+    qText.textContent = 'Which style is this?';
+    qFeed.textContent = 'Listening… two bars.';
+    answerBtns.forEach(btn => btn.classList.remove('ok','no'));
+
+    start([{key: key, bars: 2, bpm: b}], 'quiz');
+    setQuizBusy(true);
+    setTimeout(() => { if(quiz.state === 'awaiting'){ setQuizBusy(false); qFeed.textContent = 'Answer whenever you like.'; } }, 400);
+  }
+
+  answerBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(quiz.state !== 'awaiting' || !quiz.answer) return;
+      const guess = btn.dataset.guess;
+      const right = guess === quiz.answer;
+      quiz.asked++;
+      if(right) quiz.correct++;
+      qScore.textContent = quiz.correct;
+      qAsked.textContent = quiz.asked;
+      btn.classList.add(right ? 'ok' : 'no');
+      if(!right){
+        const correctBtn = answerBtns.find(b => b.dataset.guess === quiz.answer);
+        if(correctBtn) correctBtn.classList.add('ok');
+      }
+      const names = { tango:'Tango — 4/4 walking marcato', vals:'Vals — 3/4 rolling triple', milonga:'Milonga — 2/4 habanera bounce' };
+      qFeed.innerHTML = (right ? '✅ <b>Yes.</b> ' : '❌ <b>Not quite.</b> ') + names[quiz.answer];
+      quiz.state = 'answered';
+      qText.textContent = right ? 'Got it.' : 'Listen again…';
+      answerBtns.forEach(b => b.disabled = true);
+      setTimeout(() => {
+        if(document.getElementById('quiz').getBoundingClientRect().top < window.innerHeight &&
+           document.getElementById('quiz').getBoundingClientRect().bottom > 0){
+          askQuestion();
+        } else {
+          quiz.state = 'idle';
+          qText.textContent = 'Keep going?';
+          qFeed.textContent = 'Press start to continue.';
+          answerBtns.forEach(b => b.disabled = false);
+        }
+      }, 1600);
+    });
+  });
+
+  document.getElementById('quizStart').addEventListener('click', askQuestion);
+  document.getElementById('quizReset').addEventListener('click', resetQuiz);
+
+  function resetQuiz(){
+    quiz.correct = 0; quiz.asked = 0; quiz.answer = null; quiz.state = 'idle';
+    qScore.textContent = '0'; qAsked.textContent = '0';
+    qText.textContent = 'Ready when you are.';
+    qFeed.textContent = 'Press start, listen to the pattern, then answer.';
+    answerBtns.forEach(b => { b.classList.remove('ok','no'); b.disabled = false; });
+  }
+
+  /* ------------------------------------------------------------------ *
+   *  Boot
+   * ------------------------------------------------------------------ */
+  buildMeters();
+  indexDots();
+  requestAnimationFrame(raf);
+
+  // keyboard: 1/2/3 play, space stops
+  document.addEventListener('keydown', e => {
+    if(e.target.matches('input,textarea,select')) return;
+    if(e.key === '1') playOne('tango');
+    else if(e.key === '2') playOne('vals');
+    else if(e.key === '3') playOne('milonga');
+    else if(e.key === ' '){ e.preventDefault(); stop(); }
+  });
+
+  // first user gesture unlocks audio on iOS/Safari
+  window.addEventListener('pointerdown', function unlock(){ initAudio(); window.removeEventListener('pointerdown', unlock); }, {once:true});
+})();
+</script>
+</body>
+</html>
