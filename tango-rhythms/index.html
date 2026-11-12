@@ -240,6 +240,20 @@
   .legend .dot-solid{width:11px;height:11px;border-radius:50%;background:var(--milonga)}
   .legend .dot-sync{width:11px;height:11px;border-radius:50%;border:2.5px solid var(--vals);box-sizing:border-box}
   .legend .tick-faint{width:2px;height:14px;background:rgba(242,236,230,.35)}
+  .pat-tempo{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    margin:22px 0 0;padding:12px 16px;border-radius:12px;
+    border:1px solid var(--line);background:rgba(255,255,255,.03);
+  }
+  .pat-tempo label{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .pat-tempo input[type=range]{flex:1 1 200px;max-width:340px;--c:var(--milonga)}
+  .pat-tempo .val{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--ink);font-weight:600;min-width:74px}
+  .pat-tempo .val small{color:var(--muted);font-weight:400;font-size:11px;letter-spacing:.08em}
+  .pat-reset{
+    font:inherit;font-size:12px;color:var(--muted);background:none;cursor:pointer;
+    border:1px solid var(--line);border-radius:999px;padding:5px 12px;transition:color .2s,border-color .2s;
+  }
+  .pat-reset:hover{color:var(--ink);border-color:rgba(242,236,230,.4)}
   .embed{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;margin-top:26px}
   @media(max-width:820px){.embed{grid-template-columns:1fr}}
   .embed-inner{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000}
@@ -497,6 +511,13 @@
         stops talking, so you can hear it without him.
       </p>
       <p class="legend"><span><i class="dot-solid"></i> step on the beat</span><span><i class="dot-sync"></i> sincopa — off the beat</span><span><i class="tick-faint"></i> pulse</span></p>
+      </div>
+
+    <div class="pat-tempo">
+      <label for="patTempo">Pattern tempo</label>
+      <input id="patTempo" type="range" min="70" max="140" step="1" value="104" aria-label="Tempo for the milonga patterns">
+      <span class="val"><b id="patTempoVal">104</b> <small>BPM</small></span>
+      <button class="pat-reset" id="patTempoReset" type="button">reset</button>
     </div>
 
     <div class="patterns" id="patterns"></div>
@@ -1124,7 +1145,7 @@
           stop(); return;
         }
         stop();
-        start([{pattern: p, bars: 100000}], 'pattern');
+        start([{pattern: p, bars: 100000, bpm: patBpm}], 'pattern');
         clearActive();
         setActive('milonga');
         btn.setAttribute('aria-pressed','true');
@@ -1132,6 +1153,24 @@
       });
     });
   }
+
+  /* ---------- pattern tempo ---------- */
+  let patBpm = 104;
+  const PAT_BPM_DEFAULT = 104;
+  const patSlider = document.getElementById('patTempo');
+  const patValOut = document.getElementById('patTempoVal');
+
+  function applyPatBpm(v){
+    patBpm = Math.max(70, Math.min(140, v));
+    if(patSlider) patSlider.value = String(patBpm);
+    if(patValOut) patValOut.textContent = String(patBpm);
+    // live: the scheduler reads bpm per bar, so changing it takes effect on the next bar
+    if(T.playing && T.mode === 'pattern') T.seq.forEach(e => { e.bpm = patBpm; });
+  }
+
+  if(patSlider) patSlider.addEventListener('input', () => applyPatBpm(+patSlider.value));
+  const patReset = document.getElementById('patTempoReset');
+  if(patReset) patReset.addEventListener('click', () => applyPatBpm(PAT_BPM_DEFAULT));
 
   function flashPattern(id, i, kind){
     const card = document.querySelector('.pat[data-pat="' + id + '"]');
