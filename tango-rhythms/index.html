@@ -372,6 +372,41 @@
   .orq p{font-size:14px;margin:0;color:#c8c0ba}
   .orq .who{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 
+  /* ---------- your own song ---------- */
+  .song-panel{margin-top:26px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.03);padding:18px}
+  .song-drop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px;border:1.5px dashed rgba(242,236,230,.18);border-radius:12px;transition:border-color .2s,background .2s}
+  .song-drop.over{border-color:var(--milonga);background:color-mix(in srgb,var(--milonga) 10%,transparent)}
+  .song-pick{font:inherit;font-size:13px;font-weight:600;color:#12100f;background:color-mix(in srgb,var(--milonga) 85%,white);border:0;border-radius:999px;padding:9px 18px;cursor:pointer;transition:background .2s}
+  .song-pick:hover{background:var(--milonga)}
+  .song-hint{font-size:13px;color:var(--muted)}
+  .song-body{margin-top:18px;display:grid;gap:13px}
+  .song-body[hidden]{display:none}
+  .song-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .song-row>label{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .song-name{font-weight:600;font-size:14.5px;color:var(--ink)}
+  .song-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .song-bpm{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);min-width:78px;line-height:1}
+  .song-conf{font-size:11.5px;color:var(--muted)}
+  .song-row input[type=number]{width:84px;font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink)}
+  .song-row select{font:inherit;font-size:13px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);max-width:100%}
+  .song-inline{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+  .song-row input[type=range]{flex:1 1 120px;max-width:220px;--c:var(--milonga)}
+  .song-off{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:104px}
+  .song-pos{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .song-note{font-size:12.5px;color:#a9a29c;margin:2px 0 0;line-height:1.55}
+  .song-play{
+    font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:9px 18px;border-radius:999px;
+    border:1px solid color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 16%,transparent);
+    color:var(--ink);transition:background .18s,border-color .18s,color .18s;
+  }
+  .song-play:hover{background:color-mix(in srgb,var(--c) 26%,transparent)}
+  .song-play[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 85%,white);color:#12100f;border-color:transparent}
+  .song-beats{display:flex;gap:6px;margin-left:auto}
+  .song-beats i{width:9px;height:9px;border-radius:50%;background:rgba(242,236,230,.18);transition:background .1s,transform .1s}
+  .song-beats i.on{background:var(--milonga);transform:scale(1.4)}
+  .pat-reset[aria-pressed="true"]{color:#12100f;background:color-mix(in srgb,var(--milonga) 85%,white);border-color:transparent}
+  .pat-reset[disabled]{opacity:.4;cursor:default}
+
   /* ---------- footer ---------- */
   footer{padding:44px 0 64px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
   footer h4{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
@@ -391,6 +426,7 @@
     <nav>
       <a href="#styles">The three</a>
       <a href="#milonga-patterns">Milonga patterns</a>
+      <a href="#song">Your song</a>
       <a href="#tempo">Tempo vs rhythm</a>
       <a href="#compare">Compare</a>
       <a href="#quiz">Ear test</a>
@@ -553,6 +589,83 @@
         The play buttons are a synth playing the spacing he draws over a milonga pulse — a study aid,
         not his audio. Note: his slides spell it "rythm"; I've kept his titles close but fixed the spelling.
       </p>
+    </div>
+  </div>
+</section>
+
+<section id="song">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Section 02b · Your own song</p>
+      <h2>Load a song and step a pattern over it</h2>
+      <p class="sub">
+        Pick any milonga from your own files. The tempo is read straight off the audio, one of the five
+        patterns is laid on top as a quiet click track, and you can nudge the grid until it sits exactly on
+        the beat. Nothing is uploaded and nothing is stored — the file is decoded and played in this tab only.
+      </p>
+    </div>
+
+    <div class="song-panel" style="--c:var(--milonga)">
+      <div class="song-drop" id="songDrop">
+        <input id="songFile" type="file" accept="audio/*" hidden>
+        <button class="song-pick" id="songPick" type="button">Choose a file</button>
+        <span class="song-hint" id="songHint">…or drop an audio file here · mp3, m4a, wav, ogg</span>
+      </div>
+
+      <div class="song-body" id="songBody" hidden>
+        <div class="song-row">
+          <span class="song-name" id="songName">—</span>
+          <span class="song-meta" id="songMeta"></span>
+        </div>
+
+        <div class="song-row">
+          <label for="songBpm">Tempo</label>
+          <span class="song-bpm" id="songBpmOut">—</span>
+          <span class="song-conf" id="songConf"></span>
+          <button class="pat-reset" id="songBpmHalf" type="button">÷2</button>
+          <button class="pat-reset" id="songBpmDouble" type="button">×2</button>
+          <input id="songBpm" type="number" min="40" max="240" step="0.5" value="104" aria-label="Tempo in beats per minute">
+          <button class="pat-reset" id="songTap" type="button">tap</button>
+        </div>
+
+        <div class="song-row">
+          <label for="songPat">Pattern</label>
+          <select id="songPat"></select>
+          <label class="song-inline"><input type="checkbox" id="songMuteWeak"> mute weak beats</label>
+        </div>
+
+        <div class="song-row">
+          <label for="songVolSong">Song</label>
+          <input id="songVolSong" type="range" min="0" max="1" step="0.01" value="0.85" aria-label="Song volume">
+          <label for="songVolClick">Pattern</label>
+          <input id="songVolClick" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Pattern click volume">
+        </div>
+
+        <div class="song-row">
+          <label>Grid</label>
+          <button class="pat-reset" id="songNudgeBack" type="button">◀ 10 ms</button>
+          <button class="pat-reset" id="songNudgeFwd" type="button">10 ms ▶</button>
+          <button class="pat-reset" id="songShiftHalf" type="button">shift ½ beat</button>
+          <button class="pat-reset" id="songShiftBeat" type="button">shift a beat</button>
+          <span class="song-off" id="songOffsetOut">offset 0 ms</span>
+        </div>
+
+        <div class="song-row">
+          <button class="song-play" id="songPlay" type="button" aria-pressed="false">▶ Play</button>
+          <button class="pat-reset" id="songLoop" type="button" aria-pressed="false">↻ Loop bar</button>
+          <button class="pat-reset" id="songCont" type="button" disabled>continue →</button>
+          <span class="song-pos" id="songPos">0:00 / 0:00</span>
+          <span class="song-beats" id="songBeats" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </div>
+
+        <p class="song-note">
+          DJ apps usually quote the fast pulse — a milonga that "runs at 200 BPM" has its main beat near 100, so the
+          detector folds what it finds into the 88–124 band. If it guessed the wrong octave, ÷2 or ×2 fixes it.
+          "Shift ½ beat" is for a grid that lands between the beats, "shift a beat" for a grid that lands on the beat
+          but takes the wrong beat as beat 1. Loop bar repeats one bar of the song until you turn it off; continue
+          jumps back to the song and carries on from the end of that bar.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -827,6 +940,7 @@
    *  Audio engine
    * ------------------------------------------------------------------ */
   let ctx = null, master = null, noiseBuf = null;
+  let clickBus = null, songClickBus = null, songBus = null;
 
   function initAudio(){
     if(!ctx){
@@ -839,6 +953,10 @@
       master.gain.value = 0.85;
       master.connect(comp);
       comp.connect(ctx.destination);
+      // separate buses: the teaching clicks, the song's own click overlay, the song itself
+      clickBus = ctx.createGain();     clickBus.gain.value = 1.0;    clickBus.connect(master);
+      songClickBus = ctx.createGain(); songClickBus.gain.value = 0.8; songClickBus.connect(master);
+      songBus = ctx.createGain();      songBus.gain.value = 0.85;    songBus.connect(master);
       // short noise buffer reused by all percussive voices
       noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.25), ctx.sampleRate);
       const d = noiseBuf.getChannelData(0);
@@ -847,12 +965,12 @@
     if(ctx.state === 'suspended') ctx.resume();
   }
 
-  function boom(when, accent){
+  function boom(when, accent, dest){
     const out = ctx.createGain();
     out.gain.setValueAtTime(0.0001, when);
     out.gain.exponentialRampToValueAtTime(Math.max(0.02, 0.95*accent), when+0.006);
     out.gain.exponentialRampToValueAtTime(0.0001, when+0.34);
-    out.connect(master);
+    out.connect(dest || clickBus);
 
     const o = ctx.createOscillator();
     o.type = 'sine';
@@ -869,11 +987,11 @@
     const ng = ctx.createGain();
     ng.gain.setValueAtTime(0.30*accent, when);
     ng.gain.exponentialRampToValueAtTime(0.0001, when+0.035);
-    n.connect(nf); nf.connect(ng); ng.connect(master);
+    n.connect(nf); nf.connect(ng); ng.connect(dest || clickBus);
     n.start(when); n.stop(when+0.06);
   }
 
-  function click(when, accent, freq, decay, gain){
+  function click(when, accent, freq, decay, gain, dest){
     const n = ctx.createBufferSource();
     n.buffer = noiseBuf;
     const f = ctx.createBiquadFilter();
@@ -883,7 +1001,7 @@
     g.gain.setValueAtTime(0.0001, when);
     g.gain.exponentialRampToValueAtTime(peak, when+0.004);
     g.gain.exponentialRampToValueAtTime(0.0001, when+decay);
-    n.connect(f); f.connect(g); g.connect(master);
+    n.connect(f); f.connect(g); g.connect(dest || clickBus);
     n.start(when); n.stop(when+decay+0.02);
   }
 
@@ -1013,6 +1131,7 @@
   function start(seq, mode){
     initAudio();
     stop(false);
+    if(SONG.playing) songStop();
     T.seq = seq; T.idx = 0; T.bar = 0; T.barsLeft = seq[0].bars;
     T.queue = []; T.mode = mode || 'single'; T.playing = true; T.gen++;
     T.nextBar = ctx.currentTime + 0.10;
@@ -1197,6 +1316,8 @@
   function applyPatMute(on){
     patMuteWeak = !!on;
     if(patMuteBtn) patMuteBtn.setAttribute('aria-pressed', patMuteWeak ? 'true' : 'false');
+    const songCb = document.getElementById('songMuteWeak');
+    if(songCb) songCb.checked = patMuteWeak;
     const host = document.getElementById('patterns');
     if(host) host.dataset.mute = patMuteWeak ? 'on' : 'off';
   }
@@ -1232,17 +1353,428 @@
   }
 
   function raf(){
-    if(ctx && T.queue.length){
+    if(ctx){
       const now = ctx.currentTime;
-      while(T.queue.length && T.queue[0].time <= now + 0.03){
-        const e = T.queue.shift();
-        if(e.type === 'bar'){ setActive(e.key); }
-        else if(e.type === 'pat' || e.type === 'grid'){ flashPattern(e.id, e.i, e.type); }
-        else { flashSlot(e.key, e.slot, e.a); }
+      if(T.queue.length){
+        while(T.queue.length && T.queue[0].time <= now + 0.03){
+          const e = T.queue.shift();
+          if(e.type === 'bar'){ setActive(e.key); }
+          else if(e.type === 'pat' || e.type === 'grid'){ flashPattern(e.id, e.i, e.type); }
+          else { flashSlot(e.key, e.slot, e.a); }
+        }
       }
+      if(SONG.queue.length){
+        while(SONG.queue.length && SONG.queue[0].time <= now + 0.03){
+          const e = SONG.queue.shift();
+          if(e.type === 'pat' || e.type === 'grid'){ flashPattern(e.id, e.i, e.type); }
+          else if(e.type === 'beat'){ flashSongBeat(e.i); }
+        }
+      }
+      if(SONG.playing && now - SONG.uiTick > 0.12){ SONG.uiTick = now; updateSongPos(); }
     }
     requestAnimationFrame(raf);
   }
+
+  /* ------------------------------------------------------------------ *
+   *  Your own song — load audio, detect tempo, overlay a milonga pattern
+   * ------------------------------------------------------------------ */
+  const SONG = {
+    buffer:null, name:'', dur:0, bpm:104, rawBpm:null, conf:0, offset:0,
+    pattern: PATTERNS[0], playing:false, src:null, timer:null, queue:[],
+    pos0:0, t0:0, nextBar:0, nextTime:0,
+    loop:false, loopStart:0, loopEnd:0, uiTick:0
+  };
+  const S_BPM_LO = 88, S_BPM_HI = 124;
+
+  function fmtTime(t){
+    t = Math.max(0, t || 0);
+    return Math.floor(t/60) + ':' + String(Math.floor(t%60)).padStart(2,'0');
+  }
+
+  /* onset envelope + autocorrelation → tempo; comb score → where the beat sits */
+  function detectTempo(buffer){
+    const sr = buffer.sampleRate, hop = 256, frame = 512;
+    const ch0 = buffer.getChannelData(0);
+    const ch1 = buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : null;
+    const frames = Math.max(1, Math.floor((buffer.length - frame) / hop));
+    const env = new Float32Array(frames);
+    for(let i = 0; i < frames; i++){
+      const off = i * hop;
+      let sum = 0;
+      for(let j = 0; j < frame; j += 4){
+        let v = ch0[off + j] || 0;
+        if(ch1) v = (v + (ch1[off + j] || 0)) * 0.5;
+        sum += v * v;
+      }
+      env[i] = Math.sqrt(sum / (frame / 4));
+    }
+    // onset strength = positive rise of log energy
+    const on = new Float32Array(frames);
+    for(let i = 1; i < frames; i++){
+      on[i] = Math.max(0, Math.log1p(env[i] * 60) - Math.log1p(env[i-1] * 60));
+    }
+    // subtract a slow trend so long loud passages don't dominate
+    const w = Math.max(2, Math.round(sr / hop));
+    let acc = 0;
+    for(let i = 0; i < frames; i++){
+      acc += on[i];
+      if(i >= w) acc -= on[i - w];
+      on[i] = Math.max(0, on[i] - acc / Math.min(i + 1, w));
+    }
+
+    const fps = sr / hop;
+    const lagMin = Math.max(4, Math.round(fps * 60 / 220));
+    const lagMax = Math.round(fps * 60 / 55);
+    const acf = new Float32Array(lagMax + 2);
+    let bestLag = lagMin, bestVal = -1;
+    for(let L = lagMin; L <= lagMax; L++){
+      let s = 0, e1 = 0, e2 = 0;
+      for(let i = 0; i + L < frames; i++){
+        const a = on[i], b = on[i + L];
+        s += a * b; e1 += a * a; e2 += b * b;
+      }
+      const v = (e1 > 0 && e2 > 0) ? s / Math.sqrt(e1 * e2) : 0;
+      acf[L] = v;
+      if(v > bestVal){ bestVal = v; bestLag = L; }
+    }
+    const y0 = acf[bestLag-1] || 0, y1 = acf[bestLag] || 0, y2 = acf[bestLag+1] || 0;
+    const den = y0 - 2*y1 + y2;
+    const off = den !== 0 ? Math.max(-0.5, Math.min(0.5, 0.5 * (y0 - y2) / den)) : 0;
+    const period = bestLag + off;                  // frames per detected pulse
+    const raw = 60 * fps / period;
+    let bpm = raw;
+    while(bpm < S_BPM_LO) bpm *= 2;
+    while(bpm > S_BPM_HI) bpm /= 2;
+
+    // phase: slide a comb at that period, keep the offset with most onset energy
+    let phi = 0, phiScore = -1;
+    const span = Math.ceil(period);
+    for(let c = 0; c < span; c++){
+      let s = 0, n = 0;
+      for(let k = 0; ; k++){
+        const idx = c + k * period;
+        if(idx >= frames - 1) break;
+        const i0 = Math.floor(idx), fr = idx - i0;
+        s += on[i0] * (1 - fr) + on[i0 + 1] * fr;
+        n++;
+      }
+      if(n > 3 && s / n > phiScore){ phiScore = s / n; phi = c; }
+    }
+    return { bpm, raw, conf: Math.max(0, Math.min(1, bestVal)), phase: (phi * hop) / sr };
+  }
+
+  function songSpb(){ return 60 / SONG.bpm; }
+  function songBarDur(){ return 4 * songSpb(); }
+  function songBarPos(n){ return SONG.offset + n * songBarDur(); }
+
+  function songPos(){
+    if(!SONG.playing) return SONG.pos0;
+    if(SONG.loop){
+      const d = SONG.loopEnd - SONG.loopStart;
+      if(d <= 0) return SONG.loopStart;
+      return SONG.loopStart + (((ctx.currentTime - SONG.t0) % d) + d) % d;
+    }
+    return SONG.pos0 + Math.max(0, ctx.currentTime - SONG.t0);
+  }
+
+  function songKillSource(){
+    if(SONG.src){
+      try{ SONG.src.onended = null; SONG.src.stop(); }catch(e){}
+      try{ SONG.src.disconnect(); }catch(e){}
+      SONG.src = null;
+    }
+    if(SONG.timer){ clearInterval(SONG.timer); SONG.timer = null; }
+    SONG.queue.length = 0;
+    SONG.playing = false;
+  }
+
+  function songStart(pos){
+    if(!SONG.buffer) return;
+    initAudio();
+    stop();
+    songKillSource();
+    const barDur = songBarDur();
+    const when = ctx.currentTime + 0.12;
+    const from = Math.max(0, Math.min(pos, SONG.dur - 0.02));
+    let n = Math.ceil((from - SONG.offset) / barDur);
+    if(n < 0) n = 0;
+    SONG.pos0 = from; SONG.t0 = when; SONG.loop = false;
+    SONG.nextBar = n;
+    SONG.nextTime = when + Math.max(0, songBarPos(n) - from);
+    const src = ctx.createBufferSource();
+    src.buffer = SONG.buffer;
+    src.connect(songBus);
+    src.start(when, from);
+    src.onended = () => { if(SONG.playing && !SONG.loop && songPos() >= SONG.dur - 0.06) songStop(); };
+    SONG.src = src;
+    SONG.playing = true;
+    SONG.timer = setInterval(songScheduler, 25);
+    songScheduler();
+    updateSongUI();
+  }
+
+  function songStartLoop(barIdx){
+    if(!SONG.buffer) return;
+    initAudio();
+    stop();
+    songKillSource();
+    const barDur = songBarDur();
+    const start = Math.max(0, Math.min(songBarPos(barIdx), SONG.dur - 0.1));
+    const end = Math.min(SONG.dur, start + barDur);
+    if(end - start < barDur * 0.5){ songStart(start); return; }
+    const when = ctx.currentTime + 0.12;
+    const src = ctx.createBufferSource();
+    src.buffer = SONG.buffer;
+    src.connect(songBus);
+    src.loop = true; src.loopStart = start; src.loopEnd = end;
+    src.start(when, start);
+    SONG.src = src;
+    SONG.loop = true; SONG.loopStart = start; SONG.loopEnd = end;
+    SONG.pos0 = start; SONG.t0 = when;
+    SONG.nextBar = barIdx; SONG.nextTime = when;
+    SONG.playing = true;
+    SONG.timer = setInterval(songScheduler, 25);
+    songScheduler();
+    updateSongUI();
+  }
+
+  function songStop(){
+    const pos = songPos();
+    songKillSource();
+    SONG.pos0 = Math.min(pos, Math.max(0, SONG.dur - 0.05));
+    SONG.loop = false;
+    updateSongUI();
+  }
+
+  function songContinue(){
+    const next = SONG.loop ? SONG.loopEnd : songPos();
+    SONG.loop = false;
+    songStart(Math.min(next, Math.max(0, SONG.dur - 0.05)));
+  }
+
+  function songReanchor(){
+    if(!SONG.playing) return;
+    const barDur = songBarDur();
+    const pos = songPos();
+    const n = Math.max(0, Math.ceil((pos - SONG.offset) / barDur));
+    SONG.nextBar = n;
+    SONG.nextTime = ctx.currentTime + Math.max(0, songBarPos(n) - pos);
+  }
+
+  function songScheduler(){
+    if(!SONG.playing) return;
+    const barDur = songBarDur();
+    const now = ctx.currentTime;
+    let guard = 0;
+    while(SONG.nextTime < now + 0.30 && guard++ < 12){
+      scheduleSongBar(SONG.nextTime, SONG.pattern);
+      SONG.nextTime += barDur;
+      SONG.nextBar++;
+    }
+    if(!SONG.loop && songPos() >= SONG.dur - 0.03) songStop();
+  }
+
+  function scheduleSongBar(t, p){
+    const spb = songSpb();
+    for(let i = 0; i < 4; i++){
+      const when = t + i * spb;
+      const isStep = p.steps.indexOf(i + 1) !== -1;
+      if(!patMuteWeak || isStep) click(when, 0.20, 1750, 0.045, 0.16, songClickBus);
+      SONG.queue.push({time: when, type:'grid', id: p.id, i: i});
+      SONG.queue.push({time: when, type:'beat', i: i});
+    }
+    const ev = patternEvents(p);
+    ev.forEach((e, i) => {
+      const when = t + (e.p - 1) * spb;
+      if(e.k === 'step'){
+        boom(when, e.p === 1 ? 1 : 0.82, songClickBus);
+      } else {
+        click(when, 0.95, 3200, 0.032, 0.20, songClickBus);
+        boom(when, 0.55, songClickBus);
+      }
+      SONG.queue.push({time: when, type:'pat', id: p.id, i: i});
+    });
+    if(p.traspie){
+      const last = ev[ev.length - 1];
+      const when = t + (last.p - 1) * spb + spb * 0.28;
+      click(when, 0.8, 3200, 0.032, 0.20, songClickBus);
+      SONG.queue.push({time: when, type:'pat', id: p.id, i: ev.length - 1});
+    }
+    SONG.queue.sort((a, b) => a.time - b.time);
+  }
+
+  function flashSongBeat(i){
+    const row = document.getElementById('songBeats');
+    if(!row) return;
+    const dot = row.children[i];
+    if(!dot) return;
+    dot.classList.add('on');
+    setTimeout(() => dot.classList.remove('on'), 110);
+  }
+
+  function updateSongPos(){
+    const el = document.getElementById('songPos');
+    if(el) el.textContent = fmtTime(songPos()) + ' / ' + fmtTime(SONG.dur);
+  }
+
+  function updateSongUI(){
+    const playBtn = document.getElementById('songPlay');
+    if(playBtn){
+      playBtn.setAttribute('aria-pressed', SONG.playing ? 'true' : 'false');
+      playBtn.textContent = SONG.playing ? '■ Stop' : '▶ Play';
+    }
+    const loopBtn = document.getElementById('songLoop');
+    if(loopBtn) loopBtn.setAttribute('aria-pressed', SONG.loop ? 'true' : 'false');
+    const cont = document.getElementById('songCont');
+    if(cont) cont.disabled = !SONG.loop;
+    const bpmOut = document.getElementById('songBpmOut');
+    if(bpmOut) bpmOut.textContent = SONG.bpm.toFixed(1);
+    const bpmIn = document.getElementById('songBpm');
+    if(bpmIn && document.activeElement !== bpmIn) bpmIn.value = SONG.bpm.toFixed(1);
+    const offOut = document.getElementById('songOffsetOut');
+    if(offOut) offOut.textContent = 'offset ' + Math.round(SONG.offset * 1000) + ' ms';
+    const conf = document.getElementById('songConf');
+    if(conf){
+      conf.textContent = SONG.rawBpm
+        ? 'detected · ' + (SONG.conf > 0.45 ? 'strong' : SONG.conf > 0.25 ? 'fair' : 'weak') +
+          ' · raw ' + Math.round(SONG.rawBpm)
+        : 'set by hand';
+    }
+    updateSongPos();
+  }
+
+  async function loadSong(file){
+    if(!file) return;
+    initAudio();
+    const hint = document.getElementById('songHint');
+    if(hint) hint.textContent = 'decoding ' + file.name + '…';
+    try{
+      const ab = await file.arrayBuffer();
+      const buf = await ctx.decodeAudioData(ab);
+      songKillSource();
+      SONG.buffer = buf; SONG.name = file.name; SONG.dur = buf.duration; SONG.pos0 = 0;
+      document.getElementById('songBody').hidden = false;
+      document.getElementById('songName').textContent = file.name.replace(/\.[^.]+$/, '');
+      document.getElementById('songMeta').textContent =
+        fmtTime(buf.duration) + ' · ' + (buf.sampleRate / 1000).toFixed(1) + ' kHz · ' +
+        (buf.numberOfChannels === 1 ? 'mono' : 'stereo');
+      if(hint) hint.textContent = 'reading the beat…';
+      await new Promise(r => setTimeout(r, 40));
+      const d = detectTempo(buf);
+      SONG.bpm = Math.round(d.bpm * 10) / 10;
+      SONG.rawBpm = d.raw; SONG.conf = d.conf;
+      SONG.offset = d.phase;
+      if(hint) hint.textContent = 'ready — press play, then fix the tempo or nudge the grid if it sits off';
+      updateSongUI();
+    }catch(err){
+      if(hint) hint.textContent = 'could not decode that file — try mp3, m4a, wav or ogg';
+    }
+  }
+
+  function songSetBpm(v){
+    SONG.bpm = Math.max(40, Math.min(240, v));
+    SONG.rawBpm = null;
+    if(SONG.playing){
+      const pos = songPos();
+      if(SONG.loop) songStartLoop(Math.max(0, Math.floor((pos - SONG.offset) / songBarDur())));
+      else songReanchor();
+    }
+    updateSongUI();
+  }
+
+  function songShift(delta){
+    SONG.offset += delta;
+    if(SONG.playing && !SONG.loop) songReanchor();
+    else if(SONG.playing && SONG.loop){
+      songStartLoop(Math.max(0, SONG.nextBar > 0 ? SONG.nextBar - 1 : 0));
+    }
+    updateSongUI();
+  }
+
+  /* wiring */
+  (function(){
+    const fileEl = document.getElementById('songFile');
+    const pickEl = document.getElementById('songPick');
+    const dropEl = document.getElementById('songDrop');
+    if(!dropEl) return;
+    if(pickEl && fileEl) pickEl.addEventListener('click', () => fileEl.click());
+    if(fileEl) fileEl.addEventListener('change', () => loadSong(fileEl.files && fileEl.files[0]));
+    ['dragenter','dragover'].forEach(ev => dropEl.addEventListener(ev, e => {
+      e.preventDefault(); dropEl.classList.add('over');
+    }));
+    ['dragleave','dragend'].forEach(ev => dropEl.addEventListener(ev, () => dropEl.classList.remove('over')));
+    dropEl.addEventListener('drop', e => {
+      e.preventDefault(); dropEl.classList.remove('over');
+      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) loadSong(f);
+    });
+
+    const sel = document.getElementById('songPat');
+    if(sel){
+      sel.innerHTML = PATTERNS.map(p => '<option value="' + p.id + '">' + p.title + '</option>').join('');
+      sel.value = SONG.pattern.id;
+      sel.addEventListener('change', () => {
+        SONG.pattern = PATTERNS.filter(p => p.id === sel.value)[0] || PATTERNS[0];
+      });
+    }
+
+    const mute = document.getElementById('songMuteWeak');
+    if(mute){
+      mute.checked = patMuteWeak;
+      mute.addEventListener('change', () => applyPatMute(mute.checked));
+    }
+
+    const volSong = document.getElementById('songVolSong');
+    if(volSong) volSong.addEventListener('input', () => { if(songBus) songBus.gain.value = +volSong.value; });
+    const volClick = document.getElementById('songVolClick');
+    if(volClick) volClick.addEventListener('input', () => { if(songClickBus) songClickBus.gain.value = +volClick.value; });
+
+    const playBtn = document.getElementById('songPlay');
+    if(playBtn) playBtn.addEventListener('click', () => {
+      if(!SONG.buffer) return;
+      if(SONG.playing) songStop(); else songStart(SONG.pos0);
+    });
+    const loopBtn = document.getElementById('songLoop');
+    if(loopBtn) loopBtn.addEventListener('click', () => {
+      if(!SONG.buffer) return;
+      if(SONG.loop){ songContinue(); return; }
+      const bar = Math.max(0, Math.floor((songPos() - SONG.offset) / songBarDur()));
+      songStartLoop(bar);
+    });
+    const contBtn = document.getElementById('songCont');
+    if(contBtn) contBtn.addEventListener('click', songContinue);
+
+    const bpmIn = document.getElementById('songBpm');
+    if(bpmIn) bpmIn.addEventListener('change', () => songSetBpm(parseFloat(bpmIn.value) || SONG.bpm));
+    const bpmHalf = document.getElementById('songBpmHalf');
+    if(bpmHalf) bpmHalf.addEventListener('click', () => songSetBpm(SONG.bpm / 2));
+    const bpmDouble = document.getElementById('songBpmDouble');
+    if(bpmDouble) bpmDouble.addEventListener('click', () => songSetBpm(SONG.bpm * 2));
+
+    let taps = [];
+    const tapBtn = document.getElementById('songTap');
+    if(tapBtn) tapBtn.addEventListener('click', () => {
+      const now = performance.now();
+      taps = taps.filter(t => now - t < 2600);
+      taps.push(now);
+      if(taps.length >= 2){
+        const d = [];
+        for(let i = 1; i < taps.length; i++) d.push(taps[i] - taps[i-1]);
+        d.sort((a, b) => a - b);
+        const med = d[Math.floor(d.length / 2)];
+        if(med > 120) songSetBpm(60000 / med);
+      }
+    });
+
+    const nb = document.getElementById('songNudgeBack');
+    if(nb) nb.addEventListener('click', () => songShift(-0.010));
+    const nf = document.getElementById('songNudgeFwd');
+    if(nf) nf.addEventListener('click', () => songShift(0.010));
+    const sh = document.getElementById('songShiftHalf');
+    if(sh) sh.addEventListener('click', () => songShift(songSpb() / 2));
+    const sb = document.getElementById('songShiftBeat');
+    if(sb) sb.addEventListener('click', () => songShift(songSpb()));
+  })();
 
   /* ------------------------------------------------------------------ *
    *  UI wiring
@@ -1402,7 +1934,7 @@
     if(e.key === '1') playOne('tango');
     else if(e.key === '2') playOne('vals');
     else if(e.key === '3') playOne('milonga');
-    else if(e.key === ' '){ e.preventDefault(); stop(); }
+    else if(e.key === ' '){ e.preventDefault(); stop(); songStop(); }
   });
 
   // first user gesture unlocks audio on iOS/Safari
