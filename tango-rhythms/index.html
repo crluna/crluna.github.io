@@ -254,6 +254,19 @@
     border:1px solid var(--line);border-radius:999px;padding:5px 12px;transition:color .2s,border-color .2s;
   }
   .pat-reset:hover{color:var(--ink);border-color:rgba(242,236,230,.4)}
+  .pat-mute{
+    font:inherit;font-size:12px;color:var(--muted);background:none;cursor:pointer;
+    border:1px solid var(--line);border-radius:999px;padding:5px 12px;
+    display:inline-flex;align-items:center;gap:6px;
+    transition:color .2s,border-color .2s,background .2s;
+  }
+  .pat-mute:hover{color:var(--ink);border-color:rgba(242,236,230,.4)}
+  .pat-mute .ico{font-size:12px;line-height:1}
+  .pat-mute[aria-pressed="true"]{
+    color:#12100f;background:color-mix(in srgb,var(--milonga) 85%,white);border-color:transparent;font-weight:600;
+  }
+  .patterns .tl .weak{transition:opacity .25s}
+  .patterns[data-mute="on"] .tl .weak{opacity:.14}
   .embed{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;margin-top:26px}
   @media(max-width:820px){.embed{grid-template-columns:1fr}}
   .embed-inner{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#000}
@@ -518,6 +531,10 @@
       <input id="patTempo" type="range" min="70" max="140" step="1" value="104" aria-label="Tempo for the milonga patterns">
       <span class="val"><b id="patTempoVal">104</b> <small>BPM</small></span>
       <button class="pat-reset" id="patTempoReset" type="button">reset</button>
+      <button class="pat-mute" id="patMute" type="button" aria-pressed="false"
+              title="Silences the pulse ticks where the pattern has no step">
+        <span class="ico" aria-hidden="true">🔇</span> Mute weak beats
+      </button>
     </div>
 
     <div class="patterns" id="patterns"></div>
@@ -921,7 +938,8 @@
     T.queue.push({time: t - 0.002, type:'bar', key:'milonga', bar: T.bar});
     for(let i = 0; i < 4; i++){
       const when = t + i * spb;
-      VOICES.tick(when, 0.20);
+      // muted weak beats: keep the visual grid, drop the pulse tick where no step lands
+      if(!patMuteWeak || p.steps.indexOf(i + 1) !== -1) VOICES.tick(when, 0.20);
       T.queue.push({time: when, type:'grid', id: p.id, i: i});
     }
     const ev = patternEvents(p);
@@ -1113,8 +1131,9 @@
         const beat = i + 1;
         const cx = xf(beat);
         const onBeat = p.steps.indexOf(beat) !== -1;
-        svg += '<line x1="' + cx + '" y1="56" x2="' + cx + '" y2="84" stroke="' + (onBeat ? '#3fbcaa' : 'rgba(242,236,230,.28)') + '" stroke-width="' + (onBeat ? 3 : 1.5) + '" stroke-linecap="round"/>';
-        svg += '<text class="num" data-i="' + i + '" x="' + cx + '" y="100" text-anchor="middle" fill="rgba(242,236,230,.5)" font-size="11">' + beat + '</text>';
+        const cls = onBeat ? '' : ' weak';
+        svg += '<line class="tick' + cls + '" x1="' + cx + '" y1="56" x2="' + cx + '" y2="84" stroke="' + (onBeat ? '#3fbcaa' : 'rgba(242,236,230,.28)') + '" stroke-width="' + (onBeat ? 3 : 1.5) + '" stroke-linecap="round"/>';
+        svg += '<text class="num' + cls + '" data-i="' + i + '" x="' + cx + '" y="100" text-anchor="middle" fill="rgba(242,236,230,.5)" font-size="11">' + beat + '</text>';
       }
       ev.forEach((e, i) => {
         const cx = xf(e.p);
@@ -1171,6 +1190,18 @@
   if(patSlider) patSlider.addEventListener('input', () => applyPatBpm(+patSlider.value));
   const patReset = document.getElementById('patTempoReset');
   if(patReset) patReset.addEventListener('click', () => applyPatBpm(PAT_BPM_DEFAULT));
+
+  /* mute the weak beats: the pulse ticks that fall where the pattern has no step */
+  let patMuteWeak = false;
+  const patMuteBtn = document.getElementById('patMute');
+  function applyPatMute(on){
+    patMuteWeak = !!on;
+    if(patMuteBtn) patMuteBtn.setAttribute('aria-pressed', patMuteWeak ? 'true' : 'false');
+    const host = document.getElementById('patterns');
+    if(host) host.dataset.mute = patMuteWeak ? 'on' : 'off';
+  }
+  if(patMuteBtn) patMuteBtn.addEventListener('click', () => applyPatMute(!patMuteWeak));
+  applyPatMute(false);
 
   function flashPattern(id, i, kind){
     const card = document.querySelector('.pat[data-pat="' + id + '"]');
